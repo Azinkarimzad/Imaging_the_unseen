@@ -2,7 +2,7 @@
 "CODE_OF_CONDUCT.md" "c93c83c630db2fe2462240bf72552548" "site/built/CODE_OF_CONDUCT.md" "2022-08-05"
 "LICENSE.md" "16e8eaad880865bc4a41811b3e8fa945" "site/built/LICENSE.md" "2025-02-03"
 "config.yaml" "4c4812d2bf1a2480cb2698b51e4a870c" "site/built/config.yaml" "2025-04-11"
-"index.md" "a02c9c785ed98ddd84fe3d34ddb12fcd" "site/built/index.md" "2022-04-22"
+"index.md" "5f23c744dfafb9e4ce77b85d7e87c2bf" "site/built/index.md" "2025-04-11"
 "links.md" "8184cf4149eafbf03ce8da8ff0778c14" "site/built/links.md" "2022-04-22"
 "episodes/Intro and Theory Refresher.md" "083b4b050f08100db65af47082e12105" "site/built/Intro and Theory Refresher.md" "2025-04-11"
 "episodes/AGC Implementation.md" "b61d33fd28a85b6d5640eefb6ad074c6" "site/built/AGC Implementation.md" "2025-04-11"
