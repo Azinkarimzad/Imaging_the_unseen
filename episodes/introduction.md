@@ -1,5 +1,5 @@
 ---
-title: "Setup and Data Loading"
+title: "introduction"
 teaching: 10
 exercises: 2
 ---
