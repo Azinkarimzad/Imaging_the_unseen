@@ -1,5 +1,5 @@
 ---
-title: "Using Markdown"
+title: "introduction"
 teaching: 10
 exercises: 2
 ---
