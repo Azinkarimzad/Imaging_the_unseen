@@ -34,7 +34,7 @@ life_cycle: 'pre-alpha' # FIXME
 license: 'CC-BY 4.0'
 
 # Link to the source repository for this lesson
-source: 'https://azinkarimzad.github.io/Imaging_the_unseen/' # FIXME
+source: 'https://github.com/Azinkarimzad/Imaging_the_unseen' # FIXME
 
 # Default branch of your lesson
 branch: 'main'
