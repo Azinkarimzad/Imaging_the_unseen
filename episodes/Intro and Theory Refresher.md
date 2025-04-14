@@ -1,5 +1,5 @@
 ---
-title: "Intro & Theory Refresher"
+title: "Intro and Theory Refresher"
 teaching: 10
 exercises: 2
 ---
