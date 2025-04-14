@@ -18,10 +18,10 @@ carpentry: 'incubator'
 carpentry_description: 'Lesson Description'
 
 # Overall title for pages.
-title: 'Imaging the unseen' # FIXME
+title: 'Lesson Title' # FIXME
 
 # Date the lesson was created (YYYY-MM-DD, this is empty by default)
-created:  2025-01-01 # FIXME
+created: ~ # FIXME
 
 # Comma-separated list of keywords for the lesson
 keywords: 'software, data, lesson, The Carpentries' # FIXME
@@ -34,7 +34,8 @@ life_cycle: 'pre-alpha' # FIXME
 license: 'CC-BY 4.0'
 
 # Link to the source repository for this lesson
-source: 'https://azinkarimzad.github.io/Imaging_the_unseen/' # FIXME
+source: 'https://github.com/Azinkarimzad/Imaging_the_unseen/' # FIXME
+
 
 # Default branch of your lesson
 branch: 'main'
@@ -70,13 +71,13 @@ episodes:
 - AGC Implementation.md
 
 # Information for Learners
-learners: geoscientists
+learners: dddd
 
 # Information for Instructors
-instructors: Azin
+instructors: ddd
 
 # Learner Profiles
-profiles: will be added
+profiles: ddd
 
 # Customisation ---------------------------------------------
 #
