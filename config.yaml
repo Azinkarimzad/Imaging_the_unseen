@@ -66,13 +66,8 @@ contact: 'team@carpentries.org' # FIXME
 
 # Order of episodes in your lesson
 episodes: 
--  Intro and Theory Refresher.md
+- introduction.md
 - AGC Implementation.md
-- Background Removal.md
-- Time-Zero Correction.md
-- Bandpass Filtering.md
-- Deconvolution.md
-- Wrap-up and Discussion.md
 
 # Information for Learners
 learners: 
