@@ -18,10 +18,10 @@ carpentry: 'incubator'
 carpentry_description: 'Lesson Description'
 
 # Overall title for pages.
-title: 'Lesson Title' # FIXME
+title: 'Imaging the unseen' # FIXME
 
 # Date the lesson was created (YYYY-MM-DD, this is empty by default)
-created: ~ # FIXME
+created: on 2025 # FIXME
 
 # Comma-separated list of keywords for the lesson
 keywords: 'software, data, lesson, The Carpentries' # FIXME
@@ -65,18 +65,19 @@ contact: 'team@carpentries.org' # FIXME
 # - another-learner.md
 
 # Order of episodes in your lesson
+----------------
 episodes: 
 - introduction.md
 - AGC Implementation.md
 
 # Information for Learners
-learners: 
+learners: geoscientists
 
 # Information for Instructors
-instructors: 
+instructors: Azin
 
 # Learner Profiles
-profiles: 
+profiles: will be added
 
 # Customisation ---------------------------------------------
 #
