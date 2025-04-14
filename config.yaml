@@ -65,7 +65,6 @@ contact: 'team@carpentries.org' # FIXME
 # - another-learner.md
 
 # Order of episodes in your lesson
-----------------
 episodes: 
 - introduction.md
 - AGC Implementation.md
