@@ -1,5 +1,5 @@
 ---
-title: "Using Markdown"
+title: "Setup and Data Loading"
 teaching: 10
 exercises: 2
 ---
