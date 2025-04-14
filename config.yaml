@@ -66,8 +66,8 @@ contact: 'team@carpentries.org' # FIXME
 
 # Order of episodes in your lesson
 episodes: 
+- introduction.md
 - Intro and Theory Refresher.md
-- Setup and Data Loading.md
 - AGC Implementation.md
 
 
