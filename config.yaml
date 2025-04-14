@@ -18,7 +18,7 @@ carpentry: 'incubator'
 carpentry_description: 'Lesson Description mm'
 
 # Overall title for pages.
-title: 'Lesson Title' # FIXME
+title: 'Imaging the underworld_GPR edition' # FIXME
 
 # Date the lesson was created (YYYY-MM-DD, this is empty by default)
 created: ~ # FIXME
@@ -72,6 +72,7 @@ episodes:
 - Background Removal.md
 - Time-Zero Correction.md
 - Bandpass Filtering.md
+- Deconvolution.md
 
 
 # Information for Learners
