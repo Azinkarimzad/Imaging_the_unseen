@@ -5,7 +5,7 @@
 "index.md" "5f23c744dfafb9e4ce77b85d7e87c2bf" "site/built/index.md" "2025-04-11"
 "links.md" "8184cf4149eafbf03ce8da8ff0778c14" "site/built/links.md" "2022-04-22"
 "episodes/Intro and Theory Refresher.md" "083b4b050f08100db65af47082e12105" "site/built/Intro and Theory Refresher.md" "2025-04-11"
-"episodes/AGC Implementation.md" "b61d33fd28a85b6d5640eefb6ad074c6" "site/built/AGC Implementation.md" "2025-04-11"
+"episodes/AGC Implementation.md" "bc3a396fe7a1de3c5e3b7253f008b93e" "site/built/AGC Implementation.md" "2025-04-14"
 "episodes/Background Removal.md" "b61d33fd28a85b6d5640eefb6ad074c6" "site/built/Background Removal.md" "2025-04-11"
 "episodes/Time-Zero Correction.md" "b61d33fd28a85b6d5640eefb6ad074c6" "site/built/Time-Zero Correction.md" "2025-04-11"
 "episodes/Bandpass Filtering.md" "b61d33fd28a85b6d5640eefb6ad074c6" "site/built/Bandpass Filtering.md" "2025-04-11"
