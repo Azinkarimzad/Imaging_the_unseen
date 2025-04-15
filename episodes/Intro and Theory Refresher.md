@@ -4,8 +4,7 @@ teaching: 15
 exercises: 5
 ---
 
-::::::::::::::::::::::::::::::::::::::
-## Questions
+:::::::::::::::::::::::::::::::::::::: questions
 
 - What is Ground Penetrating Radar (GPR)?
 - How is a GPR trace defined?
@@ -13,15 +12,19 @@ exercises: 5
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Keypoints
-dddd
-
-::::::::::::::::::::::::::::::::::::: 
-## Objectives
+:::::::::::::::::::::::::::::::::::::: objectives
 
 - Describe the basic principles of GPR.
 - Explain what a trace is in GPR data.
 - Demonstrate how to load and plot SEG-Y data using `obspy`.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::: keypoints
+
+- GPR uses EM waves to detect subsurface features.
+- A trace is a time series of reflections from a point.
+- SEG-Y files can be visualized using ObsPy.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -72,4 +75,3 @@ plt.xlabel("Sample Index")
 plt.ylabel("Amplitude")
 plt.grid(True)
 plt.show()
-
