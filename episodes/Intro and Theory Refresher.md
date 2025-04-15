@@ -4,7 +4,8 @@ teaching: 15
 exercises: 5
 ---
 
-:::::::::::::::::::::::::::::::::::::: questions 
+::::::::::::::::::::::::::::::::::::::
+## questions 
 
 - What is Ground Penetrating Radar (GPR)?
 - How is a GPR trace defined?
@@ -12,7 +13,8 @@ exercises: 5
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-::::::::::::::::::::::::::::::::::::: objectives
+::::::::::::::::::::::::::::::::::::: 
+## objectives
 
 - Describe the basic principles of GPR.
 - Explain what a trace is in GPR data.
