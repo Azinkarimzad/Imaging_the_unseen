@@ -4,7 +4,8 @@ teaching: 15
 exercises: 5
 ---
 
-:::::::::::::::::::::::::::::::::::::: questions
+:::::::::::::::::::::::::::::::::::::: 
+## Questions
 
 - What is Ground Penetrating Radar (GPR)?
 - How is a GPR trace defined?
@@ -12,7 +13,8 @@ exercises: 5
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::::::: objectives
+:::::::::::::::::::::::::::::::::::::: 
+## Objectives
 
 - Describe the basic principles of GPR.
 - Explain what a trace is in GPR data.
@@ -20,7 +22,8 @@ exercises: 5
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::::::: keypoints
+:::::::::::::::::::::::::::::::::::::: 
+## Keypoints
 
 - GPR uses EM waves to detect subsurface features.
 - A trace is a time series of reflections from a point.
