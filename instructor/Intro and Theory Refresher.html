@@ -215,20 +215,12 @@
 <div class="accordion accordion-flush" id="accordionFlushcurrent">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-headingcurrent">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
         2. Intro and Theory Refresher
         </span>
-      </button>
+      
     </div><!--/div.accordion-header-->
-
-    <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
-      <div class="accordion-body">
-        <ul><li><a href="#questions">Questions</a></li>
-<li><a href="#objectives">Objectives</a></li>
-        </ul></div><!--/div.accordion-body-->
-    </div><!--/div.accordion-collapse-->
 
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
@@ -345,13 +337,13 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Intro and Theory Refresher</h1>
-        <p>Last updated on 2025-04-14 |
+        <p>Last updated on 2025-04-16 |
 
         <a href="https://github.com/Azinkarimzad/Imaging_the_unseen/edit/main/episodes/Intro%20and%20Theory%20Refresher.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
 
 
-        <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 12 minutes</p>
+        <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 20 minutes</p>
 
         <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
@@ -359,24 +351,67 @@
 
         
 
-<section><h2 class="section-heading" id="questions">Questions<a class="anchor" aria-label="anchor" href="#questions"></a></h2>
-<hr class="half-width"><ol style="list-style-type: decimal"><li>
-<code>questions</code> are displayed at the beginning of the episode
-to prime the learner for the content.</li>
-<li>
-<code>objectives</code> are the learning objectives for an episode
-displayed with the questions.</li>
-<li>
-<code>keypoints</code> are displayed at the end of the episode to
-reinforce the objectives.</li>
-</ol></section><section><h2 class="section-heading" id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a></h2>
-<hr class="half-width"><p>scsc.sdl ## Keypoints</p>
-<p>dcs</p>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul><li>What is Ground Penetrating Radar (GPR)?</li>
+<li>How is a GPR trace defined?</li>
+<li>How can we read and visualize GPR data using Python?</li>
+</ul></div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul><li>Describe the basic principles of GPR.</li>
+<li>Explain what a trace is in GPR data.</li>
+<li>Demonstrate how to load and plot SEG-Y data using
+<code>obspy</code>.</li>
+</ul></div>
+</div>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Key Points</h3>
+<div class="callout-content">
+<ul><li>GPR uses EM waves to detect subsurface features.</li>
+<li>A trace is a time series of reflections from a point.</li>
+<li>SEG-Y files can be visualized using ObsPy.</li>
+</ul></div>
+</div>
+</div>
+<div class="introduction">
+<p>Ground Penetrating Radar (GPR) is a non-invasive geophysical method
+that uses electromagnetic waves to image the subsurface. It is widely
+used in engineering, archaeology, environmental studies, and
+geotechnical investigations.</p>
+<p>GPR systems send short electromagnetic pulses into the ground and
+record the reflections that occur at interfaces of materials with
+different dielectric properties. The result is a set of time-based
+signals called <em>traces</em> that capture subsurface reflections at a
+specific location.</p>
+<p>In this episode, we’ll introduce how to read and visualize a GPR
+trace from SEG-Y data using Python and the <code>obspy</code>
+library.</p>
+</div>
 <!--
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-</section></div> <!-- / div.lesson-content -->
+
+
+
+      </div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="../instructor/introduction.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="../instructor/AGC%20Implementation.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
@@ -433,9 +468,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://Azinkarimzad.github.io/Imaging_the_unseen/instructor/Intro and Theory Refresher.html",
   "identifier": "https://Azinkarimzad.github.io/Imaging_the_unseen/instructor/Intro and Theory Refresher.html",
-  "dateCreated": "2025-04-14",
-  "dateModified": "2025-04-14",
-  "datePublished": "2025-04-15"
+  "dateCreated": "2025-04-16",
+  "dateModified": "2025-04-16",
+  "datePublished": "2025-04-16"
 }
 
   </script><script>
