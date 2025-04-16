@@ -470,7 +470,7 @@ reinforce the objectives.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Output </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -497,7 +497,7 @@ reinforce the objectives.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>You can add a line with at least three colons and a
 <code>solution</code> tag.</p>
@@ -1164,35 +1164,133 @@ trace:</p>
 </div>
 </div></section><section id="aio-Deconvolution"><p>Content from <a href="Deconvolution.html">Deconvolution</a></p>
 <hr>
-<p>Last updated on 2025-04-14 |
+<p>Last updated on 2025-04-16 |
 
         <a href="https://github.com/Azinkarimzad/Imaging_the_unseen/edit/main/episodes/Deconvolution.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
-<section><h2 class="section-heading" id="questions">Questions<a class="anchor" aria-label="anchor" href="#questions"></a>
-</h2>
-<hr class="half-width">
-<ol style="list-style-type: decimal">
-<li>
-<code>questions</code> are displayed at the beginning of the episode
-to prime the learner for the content.</li>
-<li>
-<code>objectives</code> are the learning objectives for an episode
-displayed with the questions.</li>
-<li>
-<code>keypoints</code> are displayed at the end of the episode to
-reinforce the objectives.</li>
-</ol></section><section><h2 class="section-heading" id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
-</h2>
-<hr class="half-width">
-<p>scsc.sdl ## Keypoints</p>
-<p>dcs</p>
-<!--
-Place links that you need to refer to multiple times across pages here. Delete
-any links that you are not going to use.
- -->
-</section></section><section id="aio-Wrap-up and Discussion"><p>Content from <a href="Wrap-up%20and%20Discussion.html">Wrap-up and Discussion</a></p>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>What isAGC</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Describe AGC</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Key Points</h3>
+<div class="callout-content">
+<ul>
+<li>GPR AGC</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="introduction">
+<p>Ground Penetrating Radar (GPR) write about AGC:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">from</span> obspy.io.segy.segy <span class="im">import</span> _read_segy</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="im">from</span> scipy.fft <span class="im">import</span> rfft, irfft, rfftfreq</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="kw">def</span> spectral_decon(trace, fs, stab<span class="op">=</span><span class="fl">0.01</span>):</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">    Apply frequency-domain (spectral) deconvolution to a trace.</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co">        trace (1D array): input trace</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co">        fs (float): sampling frequency in Hz</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co">        stab (float): stabilization constant</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="co">        deconvolved trace (1D array)</span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(trace)</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>    f <span class="op">=</span> rfftfreq(n, d<span class="op">=</span><span class="dv">1</span><span class="op">/</span>fs)</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>    spectrum <span class="op">=</span> rfft(trace)</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>    amp <span class="op">=</span> np.<span class="bu">abs</span>(spectrum)</span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>    phase <span class="op">=</span> spectrum <span class="op">/</span> (amp <span class="op">+</span> <span class="fl">1e-12</span>)  <span class="co"># preserve phase</span></span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>    <span class="co"># Invert the amplitude spectrum with stabilization</span></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>    inverse_amp <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (amp <span class="op">+</span> stab <span class="op">*</span> np.<span class="bu">max</span>(amp))</span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>    decon_spectrum <span class="op">=</span> inverse_amp <span class="op">*</span> spectrum</span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>    <span class="co"># Reconstruct the time-domain signal</span></span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>    decon_trace <span class="op">=</span> irfft(decon_spectrum, n<span class="op">=</span>n)</span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a>    <span class="cf">return</span> decon_trace</span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a><span class="co"># --- Load SEG-Y GPR data ---</span></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a>segy_file <span class="op">=</span> <span class="st">"LINE01.sgy"</span></span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a>stream <span class="op">=</span> _read_segy(segy_file, headonly<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a><span class="co"># Build 2D data array [samples x traces]</span></span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a>n_traces <span class="op">=</span> <span class="bu">len</span>(stream.traces)</span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="bu">max</span>(<span class="bu">len</span>(tr.data) <span class="cf">for</span> tr <span class="kw">in</span> stream.traces)</span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a>data <span class="op">=</span> np.zeros((n_samples, n_traces))</span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a><span class="cf">for</span> i, tr <span class="kw">in</span> <span class="bu">enumerate</span>(stream.traces):</span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a>    data[:<span class="bu">len</span>(tr.data), i] <span class="op">=</span> tr.data</span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a><span class="co"># --- Sampling frequency from header ---</span></span>
+<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a>    dt_us <span class="op">=</span> stream.binary_file_header.sample_interval_in_microseconds</span>
+<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a>    <span class="cf">if</span> dt_us <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> dt_us <span class="op">&gt;</span> <span class="dv">10</span>:</span>
+<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Header sample interval </span><span class="sc">{</span>dt_us<span class="sc">}</span><span class="ss"> µs seems invalid. Overriding to 0.5 µs."</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a>        dt_us <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a><span class="cf">except</span>:</span>
+<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Sample interval not found. Using default of 0.5 µs."</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a>    dt_us <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a>fs <span class="op">=</span> <span class="fl">1e6</span> <span class="op">/</span> dt_us  <span class="co"># sampling frequency in Hz</span></span>
+<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Sampling rate: </span><span class="sc">{</span>fs<span class="op">/</span><span class="fl">1e6</span><span class="sc">:.2f}</span><span class="ss"> MHz"</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" tabindex="-1"></a><span class="co"># --- Apply spectral deconvolution ---</span></span>
+<span id="cb1-58"><a href="#cb1-58" tabindex="-1"></a>decon_data <span class="op">=</span> np.zeros_like(data)</span>
+<span id="cb1-59"><a href="#cb1-59" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_traces):</span>
+<span id="cb1-60"><a href="#cb1-60" tabindex="-1"></a>    decon_data[:, i] <span class="op">=</span> spectral_decon(data[:, i], fs<span class="op">=</span>fs, stab<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb1-61"><a href="#cb1-61" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" tabindex="-1"></a><span class="co"># --- Plot comparison ---</span></span>
+<span id="cb1-63"><a href="#cb1-63" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-64"><a href="#cb1-64" tabindex="-1"></a></span>
+<span id="cb1-65"><a href="#cb1-65" tabindex="-1"></a>axs[<span class="dv">0</span>].imshow(data, cmap<span class="op">=</span><span class="st">"gray"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>, origin<span class="op">=</span><span class="st">"upper"</span>)</span>
+<span id="cb1-66"><a href="#cb1-66" tabindex="-1"></a>axs[<span class="dv">0</span>].set_title(<span class="st">"Original GPR Data"</span>)</span>
+<span id="cb1-67"><a href="#cb1-67" tabindex="-1"></a>axs[<span class="dv">0</span>].set_xlabel(<span class="st">"Trace"</span>)</span>
+<span id="cb1-68"><a href="#cb1-68" tabindex="-1"></a>axs[<span class="dv">0</span>].set_ylabel(<span class="st">"Sample"</span>)</span>
+<span id="cb1-69"><a href="#cb1-69" tabindex="-1"></a></span>
+<span id="cb1-70"><a href="#cb1-70" tabindex="-1"></a>axs[<span class="dv">1</span>].imshow(decon_data, cmap<span class="op">=</span><span class="st">"gray"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>, origin<span class="op">=</span><span class="st">"upper"</span>)</span>
+<span id="cb1-71"><a href="#cb1-71" tabindex="-1"></a>axs[<span class="dv">1</span>].set_title(<span class="st">"Spectral Deconvolved GPR Data"</span>)</span>
+<span id="cb1-72"><a href="#cb1-72" tabindex="-1"></a>axs[<span class="dv">1</span>].set_xlabel(<span class="st">"Trace"</span>)</span>
+<span id="cb1-73"><a href="#cb1-73" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="#cb1-74" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-75"><a href="#cb1-75" tabindex="-1"></a>plt.show()</span>
+<span id="cb1-76"><a href="#cb1-76" tabindex="-1"></a></span></code></pre>
+</div>
+</div></section><section id="aio-Wrap-up and Discussion"><p>Content from <a href="Wrap-up%20and%20Discussion.html">Wrap-up and Discussion</a></p>
 <hr>
 <p>Last updated on 2025-04-14 |
 

@@ -10,7 +10,7 @@
 "episodes/Background Removal.md" "71d5ef755c3dda0078f624dc0f66691a" "site/built/Background Removal.md" "2025-04-16"
 "episodes/Time-Zero Correction.md" "91ff8fadc85c77f6aadc40edd3cdd1ee" "site/built/Time-Zero Correction.md" "2025-04-16"
 "episodes/Bandpass Filtering.md" "7776981d0356fa698f570e9e0257c85d" "site/built/Bandpass Filtering.md" "2025-04-16"
-"episodes/Deconvolution.md" "50be983c8d439abcfb5e9e0f15ff9c13" "site/built/Deconvolution.md" "2025-04-14"
+"episodes/Deconvolution.md" "10e2cfc4b388a420ad9b8d88035427dd" "site/built/Deconvolution.md" "2025-04-16"
 "episodes/Wrap-up and Discussion.md" "ca04a213a77c7f75873bc41da154f961" "site/built/Wrap-up and Discussion.md" "2025-04-14"
 "instructors/instructor-notes.md" "cae72b6712578d74a49fea7513099f8c" "site/built/instructor-notes.md" "2023-03-16"
 "learners/reference.md" "1c7cc4e229304d9806a13f69ca1b8ba4" "site/built/reference.md" "2023-03-16"
