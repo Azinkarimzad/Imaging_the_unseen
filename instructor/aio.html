@@ -456,7 +456,7 @@ reinforce the objectives.</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Inline instructor notes can help inform instructors of timing
 challenges associated with the lessons. They appear in the “Instructor
@@ -487,7 +487,7 @@ View”</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Output </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -514,7 +514,7 @@ View”</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>You can add a line with at least three colons and a
 <code>solution</code> tag.</p>
@@ -700,36 +700,114 @@ trace:</p>
 </div>
 </div></section><section id="aio-AGC Implementation"><p>Content from <a href="AGC%20Implementation.html">AGC</a></p>
 <hr>
-<p>Last updated on 2025-04-14 |
+<p>Last updated on 2025-04-16 |
 
         <a href="https://github.com/Azinkarimzad/Imaging_the_unseen/edit/main/episodes/AGC%20Implementation.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 12 minutes</p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
-<section><h2 class="section-heading" id="questions">Questions<a class="anchor" aria-label="anchor" href="#questions"></a>
-</h2>
-<hr class="half-width">
-<ol style="list-style-type: decimal">
-<li>
-<code>questions</code> are displayed at the beginning of the episode
-to prime the learner for the content.</li>
-<li>
-<code>objectives</code> are the learning objectives for an episode
-displayed with the questions.</li>
-<li>
-<code>keypoints</code> are displayed at the end of the episode to
-reinforce the objectives.</li>
-</ol></section><section><h2 class="section-heading" id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
-</h2>
-<hr class="half-width">
-<p>scsc.sdl ## Keypoints</p>
-<p>dcs</p>
-<!--
-Place links that you need to refer to multiple times across pages here. Delete
-any links that you are not going to use.
- -->
-</section></section><section id="aio-Background Removal"><p>Content from <a href="Background%20Removal.html">Background Removal</a></p>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>What isAGC</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Describe AGC</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Key Points</h3>
+<div class="callout-content">
+<ul>
+<li>GPR AGC</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="introduction">
+<p>Ground Penetrating Radar (GPR) write about AGC:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">from</span> obspy.io.segy.segy <span class="im">import</span> _read_segy</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="kw">def</span> apply_agc(data, window_len):</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">    Apply automatic gain control (AGC) on a 2D seismic array.</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">        data (ndarray): [samples x traces]</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co">        window_len (int): Window length in samples</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co">        ndarray: AGC-applied seismic section</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>    agc_data <span class="op">=</span> np.zeros_like(data)</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>    half_window <span class="op">=</span> window_len <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(data.shape[<span class="dv">1</span>]):  <span class="co"># loop over traces</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>        trace <span class="op">=</span> data[:, i]</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>        agc_trace <span class="op">=</span> np.zeros_like(trace)</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(trace)):</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>            start <span class="op">=</span> <span class="bu">max</span>(j <span class="op">-</span> half_window, <span class="dv">0</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>            end <span class="op">=</span> <span class="bu">min</span>(j <span class="op">+</span> half_window, <span class="bu">len</span>(trace))</span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>            window <span class="op">=</span> trace[start:end]</span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>            rms <span class="op">=</span> np.sqrt(np.mean(window <span class="op">**</span> <span class="dv">2</span>)) <span class="op">+</span> <span class="fl">1e-12</span>  <span class="co"># avoid divide by zero</span></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a>            agc_trace[j] <span class="op">=</span> trace[j] <span class="op">/</span> rms</span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>        agc_data[:, i] <span class="op">=</span> agc_trace</span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a>    <span class="cf">return</span> agc_data</span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a><span class="co"># --- Load SEG-Y ---</span></span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a>segy_file <span class="op">=</span> <span class="st">"LINE01.sgy"</span></span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a>stream <span class="op">=</span> _read_segy(segy_file, headonly<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a><span class="co"># --- Build data array ---</span></span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a>n_traces <span class="op">=</span> <span class="bu">len</span>(stream.traces)</span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a>max_len <span class="op">=</span> <span class="bu">max</span>(<span class="bu">len</span>(tr.data) <span class="cf">for</span> tr <span class="kw">in</span> stream.traces)</span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a>data <span class="op">=</span> np.zeros((max_len, n_traces))</span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a><span class="cf">for</span> i, tr <span class="kw">in</span> <span class="bu">enumerate</span>(stream.traces):</span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a>    data[:<span class="bu">len</span>(tr.data), i] <span class="op">=</span> tr.data</span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a><span class="co"># --- Apply AGC ---</span></span>
+<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a>window_length <span class="op">=</span> <span class="dv">50</span>  <span class="co"># samples (adjust based on data)</span></span>
+<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a>agc_result <span class="op">=</span> apply_agc(data, window_length)</span>
+<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a><span class="co"># --- Plot ---</span></span>
+<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a>plt.imshow(agc_result, cmap<span class="op">=</span><span class="st">"gray"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>, origin<span class="op">=</span><span class="st">"upper"</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a>plt.title(<span class="st">"Seismic Section with AGC (window = </span><span class="sc">{}</span><span class="st"> samples)"</span>.<span class="bu">format</span>(window_length))</span>
+<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a>plt.xlabel(<span class="st">"Trace Number"</span>)</span>
+<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a>plt.ylabel(<span class="st">"Time Sample"</span>)</span>
+<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a>plt.colorbar(label<span class="op">=</span><span class="st">"Amplitude (AGC-normalized)"</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a>plt.show()</span></code></pre>
+</div>
+</div></section><section id="aio-Background Removal"><p>Content from <a href="Background%20Removal.html">Background Removal</a></p>
 <hr>
 <p>Last updated on 2025-04-14 |
 
