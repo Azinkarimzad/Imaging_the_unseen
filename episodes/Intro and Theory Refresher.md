@@ -36,9 +36,6 @@ GPR systems send short electromagnetic pulses into the ground and record the ref
 
 In this episode, we'll introduce how to read and visualize a GPR trace from SEG-Y data using Python and the `obspy` library.
 
-
-## Reading and Plotting a GPR Trace in Python
-
 To visualize Ground Penetrating Radar (GPR) data, we can use the `obspy` library, which supports the SEG-Y format.
 
 Below is a simple example of how to load and display a single GPR trace:
