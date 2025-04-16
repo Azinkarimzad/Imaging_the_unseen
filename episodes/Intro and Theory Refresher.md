@@ -62,4 +62,35 @@ plt.show()
 ```
 
 
+
+```python
+import matplotlib.pyplot as plt
+from obspy.io.segy.segy import _read_segy
+import numpy as np
+
+# Load SEG-Y file
+segy_file = "LINE01.sgy"
+stream = _read_segy(segy_file, headonly=False)
+
+# Number of traces and max trace length
+n_traces = len(stream.traces)
+max_len = max(len(tr.data) for tr in stream.traces)
+
+# Fill 2D array with seismic data
+data = np.zeros((max_len, n_traces))
+for i, tr in enumerate(stream.traces):
+    data[:len(tr.data), i] = tr.data
+
+# Plot
+plt.figure(figsize=(12, 6))
+plt.imshow(data, cmap="gray", aspect="auto", origin="upper", interpolation="none")
+plt.title("Seismic Section (LINE01.sgy)")
+plt.xlabel("Trace Number")
+plt.ylabel("Time Sample")
+plt.colorbar(label="Amplitude")
+plt.show()
+
+```
+
+
 ::::::
