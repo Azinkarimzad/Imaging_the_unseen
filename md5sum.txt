@@ -7,7 +7,7 @@
 "episodes/introduction.md" "636bbcf666028454920ea4c1b87c73fd" "site/built/introduction.md" "2025-04-14"
 "episodes/Intro and Theory Refresher.md" "487e259914471a40a8983a9da19d5fe6" "site/built/Intro and Theory Refresher.md" "2025-04-16"
 "episodes/AGC Implementation.md" "8312b5ca8db4b2495d64669e4f5bafe3" "site/built/AGC Implementation.md" "2025-04-16"
-"episodes/Background Removal.md" "a5d1ce3f308a655e43f5059fbe612b9f" "site/built/Background Removal.md" "2025-04-14"
+"episodes/Background Removal.md" "71d5ef755c3dda0078f624dc0f66691a" "site/built/Background Removal.md" "2025-04-16"
 "episodes/Time-Zero Correction.md" "51fa3c02b68f4bc025e467e20d4eabc2" "site/built/Time-Zero Correction.md" "2025-04-14"
 "episodes/Bandpass Filtering.md" "6fbe402e4d56ab996eed240872e66018" "site/built/Bandpass Filtering.md" "2025-04-14"
 "episodes/Deconvolution.md" "50be983c8d439abcfb5e9e0f15ff9c13" "site/built/Deconvolution.md" "2025-04-14"

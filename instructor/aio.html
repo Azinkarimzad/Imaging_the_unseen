@@ -456,7 +456,7 @@ reinforce the objectives.</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Inline instructor notes can help inform instructors of timing
 challenges associated with the lessons. They appear in the “Instructor
@@ -487,7 +487,7 @@ View”</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Output </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -514,7 +514,7 @@ View”</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>You can add a line with at least three colons and a
 <code>solution</code> tag.</p>
@@ -809,36 +809,74 @@ trace:</p>
 </div>
 </div></section><section id="aio-Background Removal"><p>Content from <a href="Background%20Removal.html">Background Removal</a></p>
 <hr>
-<p>Last updated on 2025-04-14 |
+<p>Last updated on 2025-04-16 |
 
         <a href="https://github.com/Azinkarimzad/Imaging_the_unseen/edit/main/episodes/Background%20Removal.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 12 minutes</p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
-<section><h2 class="section-heading" id="questions">Questions<a class="anchor" aria-label="anchor" href="#questions"></a>
-</h2>
-<hr class="half-width">
-<ol style="list-style-type: decimal">
-<li>
-<code>questions</code> are displayed at the beginning of the episode
-to prime the learner for the content.</li>
-<li>
-<code>objectives</code> are the learning objectives for an episode
-displayed with the questions.</li>
-<li>
-<code>keypoints</code> are displayed at the end of the episode to
-reinforce the objectives.</li>
-</ol></section><section><h2 class="section-heading" id="objectives">Objectives<a class="anchor" aria-label="anchor" href="#objectives"></a>
-</h2>
-<hr class="half-width">
-<p>scsc.sdl ## Keypoints</p>
-<p>dcs</p>
-<!--
-Place links that you need to refer to multiple times across pages here. Delete
-any links that you are not going to use.
- -->
-</section></section><section id="aio-Time-Zero Correction"><p>Content from <a href="Time-Zero%20Correction.html">Time-Zero Correction</a></p>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>What is bakground removal</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Describe background removal</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Key Points</h3>
+<div class="callout-content">
+<ul>
+<li>GPR bkr</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="introduction">
+<p>Ground Penetrating Radar (GPR) write about bkr:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Background removal by subtracting mean trace</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="kw">def</span> remove_background(data):</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    background <span class="op">=</span> np.mean(data, axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    <span class="cf">return</span> data <span class="op">-</span> background</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co"># Apply it on your GPR section</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>data_bg_removed <span class="op">=</span> remove_background(agc_result)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>plt.imshow(data_bg_removed, cmap<span class="op">=</span><span class="st">"gray"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>, origin<span class="op">=</span><span class="st">"upper"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>plt.title(<span class="st">"GPR Section with Background Removed"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>plt.xlabel(<span class="st">"Trace Number"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>plt.ylabel(<span class="st">"Time Sample"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>plt.colorbar(label<span class="op">=</span><span class="st">"Amplitude"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>plt.show()</span></code></pre>
+</div>
+</div></section><section id="aio-Time-Zero Correction"><p>Content from <a href="Time-Zero%20Correction.html">Time-Zero Correction</a></p>
 <hr>
 <p>Last updated on 2025-04-14 |
 
