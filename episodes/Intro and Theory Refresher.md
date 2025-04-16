@@ -22,16 +22,13 @@ exercises: 5
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::::::: 
-## Keypoints
+:::::::::::::::::::::::::::::::::::::: Keypoints
 
 - GPR uses EM waves to detect subsurface features.
 - A trace is a time series of reflections from a point.
-- SEG-Y files can be visualized using ObsPy.
-
-::::::::::::::::::::::::::::::::::::::::::::::::
-
-## Introduction
+- SEG-Y files can be visualized using ObsPy
+- .::::::::::::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::: introduction
 
 Ground Penetrating Radar (GPR) is a non-invasive geophysical method that uses electromagnetic waves to image the subsurface. It is widely used in engineering, archaeology, environmental studies, and geotechnical investigations.
 
