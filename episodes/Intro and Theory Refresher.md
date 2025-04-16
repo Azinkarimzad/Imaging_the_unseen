@@ -26,7 +26,7 @@ exercises: 5
 - A trace is a time series of reflections from a point.
 - SEG-Y files can be visualized using ObsPy
 - .::::::::::::::::::::::::::::::::::::::::::::::::
-:::::::::::::::::::::::::::::::::::::::::::::::: introduction
+::::introduction
 
 Ground Penetrating Radar (GPR) is a non-invasive geophysical method that uses electromagnetic waves to image the subsurface. It is widely used in engineering, archaeology, environmental studies, and geotechnical investigations.
 
@@ -34,4 +34,4 @@ GPR systems send short electromagnetic pulses into the ground and record the ref
 
 In this episode, we'll introduce how to read and visualize a GPR trace from SEG-Y data using Python and the `obspy` library.
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
+:::::
