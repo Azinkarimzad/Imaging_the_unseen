@@ -625,6 +625,32 @@ specific location.</p>
 <p>In this episode, we’ll introduce how to read and visualize a GPR
 trace from SEG-Y data using Python and the <code>obspy</code>
 library.</p>
+<p>To visualize Ground Penetrating Radar (GPR) data, we can use the
+<code>obspy</code> library, which supports the SEG-Y format.</p>
+<p>Below is a simple example of how to load and display a single GPR
+trace:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">from</span> obspy.io.segy.segy <span class="im">import</span> _read_segy</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># Load SEG-Y using ObsPy (handles variable-length traces)</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>stream <span class="op">=</span> _read_segy(<span class="st">"LINE01.sgy"</span>, headonly<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co"># Access trace data</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>trace0 <span class="op">=</span> stream.traces[<span class="dv">0</span>].data</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>n_traces <span class="op">=</span> <span class="bu">len</span>(stream.traces)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co"># Plot first trace</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>plt.plot(trace0)</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>plt.title(<span class="st">"First Trace from LINE01.sgy"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>plt.xlabel(<span class="st">"Sample Index"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>plt.ylabel(<span class="st">"Amplitude"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>plt.show()</span></code></pre>
+</div>
 </div></section><section id="aio-AGC Implementation"><p>Content from <a href="AGC%20Implementation.html">AGC</a></p>
 <hr>
 <p>Last updated on 2025-04-14 |
