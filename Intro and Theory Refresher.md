@@ -6,6 +6,7 @@ exercises: 5
 
 :::::: questions
 
+- What is Geophysics?
 - What is Ground Penetrating Radar (GPR)?
 - How is a GPR trace defined?
 - How can we read and visualize GPR data using Python?
@@ -29,6 +30,13 @@ exercises: 5
 ::::::
 
 :::::: introduction
+
+## What is geophysics?
+In the broadest sense, the science of geophysics is the application of physics to investigations of the Earth, 
+Moon and planets. The subject is thus related to astronomy.
+To avoid confusion, the use of physics to study the interior of the Earth, from land surface to the inner 
+core, is known as solid earth geophysics.
+
 
 Ground Penetrating Radar (GPR) is a non-invasive geophysical method that uses electromagnetic waves to image the subsurface. It is widely used in engineering, archaeology, environmental studies, and geotechnical investigations.
 
