@@ -85,7 +85,11 @@ GPR was pushed.
 
 
 
-![Schematic of a typical GPR setup](/site/GPR-method-3.1.jpg)
+<figure>
+  <img src="{{ site.baseurl }}/site/GPR-method-3.1.jpg" alt="GPR Components Diagram" width="600"/>
+  <figcaption><em>Figure 1:</em> GPR system with console, antenna, and encoder.</figcaption>
+</figure>
+
 
 
 In this episode, we'll introduce how to read and visualize a GPR trace from SEG-Y data using Python and the `obspy` library.
