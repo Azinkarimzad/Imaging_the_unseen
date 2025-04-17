@@ -456,7 +456,7 @@ reinforce the objectives.</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Inline instructor notes can help inform instructors of timing
 challenges associated with the lessons. They appear in the “Instructor
@@ -487,7 +487,7 @@ View”</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Output </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -514,7 +514,7 @@ View”</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>You can add a line with at least three colons and a
 <code>solution</code> tag.</p>
@@ -657,7 +657,23 @@ moved over the surface to detect reflections from subsurface features.
 Ground penetrating radar systems are conceptually simple; the objective
 is to measure field amplitude versus time after excitation. The heart of
 a GPR system is the timing unit, which controls the generation and
-detection of signals. Most GPRs operate in the time domain.</p>
+detection of signals. Most GPRs operate in the time domain. GPRs are
+normally characterized by their center frequency. The common range
+varies between 50MHz to 2.5 GHz. Most GPR consist of three components: a
+console, an antenna, and an encoder. The first two are mandatory. The
+third is typical for 99 percent of GPR users that work in the utility
+locating, civil engineering, concrete scanning, and archaeology
+industries. The console is the brains of the system. This data logger
+communicates with both the encoder and the antenna to initiate a signal
+and record the responses. The antenna is where the GPR signal is
+produced. The encoder, also referred to as a survey wheel, controls for
+locational accuracy of the GPR data. As the wheel turns a fraction of a
+turn, the console will initialize the antenna. Most GPR antenna actually
+consist of a transmitter and a receiver, and once it is initialized by
+the console, the transmitter will produce the signal. The receiver will
+record responses for a defined amount of time and once that “time
+window” has reached its maximum time, the console will terminate the
+receiver from recording any more data</p>
 <p>In this episode, we’ll introduce how to read and visualize a GPR
 trace from SEG-Y data using Python and the <code>obspy</code>
 library.</p>
