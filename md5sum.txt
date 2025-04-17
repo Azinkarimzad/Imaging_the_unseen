@@ -5,7 +5,7 @@
 "index.md" "f72f1e2bfec15a1c6a64eecc7adbca74" "site/built/index.md" "2025-04-14"
 "links.md" "8184cf4149eafbf03ce8da8ff0778c14" "site/built/links.md" "2022-04-22"
 "episodes/introduction.md" "636bbcf666028454920ea4c1b87c73fd" "site/built/introduction.md" "2025-04-14"
-"episodes/Intro and Theory Refresher.md" "2d0c367aa4d6914b801de4eaf1abbd87" "site/built/Intro and Theory Refresher.md" "2025-04-17"
+"episodes/Intro and Theory Refresher.md" "542e08dc58546909afc1f352f49b7885" "site/built/Intro and Theory Refresher.md" "2025-04-17"
 "episodes/AGC Implementation.md" "8312b5ca8db4b2495d64669e4f5bafe3" "site/built/AGC Implementation.md" "2025-04-16"
 "episodes/Background Removal.md" "71d5ef755c3dda0078f624dc0f66691a" "site/built/Background Removal.md" "2025-04-16"
 "episodes/Time-Zero Correction.md" "91ff8fadc85c77f6aadc40edd3cdd1ee" "site/built/Time-Zero Correction.md" "2025-04-16"
