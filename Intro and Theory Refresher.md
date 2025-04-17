@@ -87,7 +87,8 @@ GPR was pushed.
 
 
 
-<img src="{{ site.baseurl }}/site/GPR-method-3.1.jpg" alt="GPR Components Diagram" width="600"/>
+![Schematic of a GPR setup]({{ site.baseurl }}/site/GPR-method-3.1.jpg){alt='Diagram of a GPR system showing console, antenna, and encoder.'}
+
 
 
 
