@@ -456,7 +456,7 @@ reinforce the objectives.</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Inline instructor notes can help inform instructors of timing
 challenges associated with the lessons. They appear in the “Instructor
@@ -487,7 +487,7 @@ View”</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Output </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -514,7 +514,7 @@ View”</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>You can add a line with at least three colons and a
 <code>solution</code> tag.</p>
@@ -638,16 +638,26 @@ any links that you are not going to use.
 of physics to investigations of the Earth, Moon and planets. The subject
 is thus related to astronomy. To avoid confusion, the use of physics to
 study the interior of the Earth, from land surface to the inner core, is
-known as solid earth geophysics.</p>
-<p>Ground Penetrating Radar (GPR) is a non-invasive geophysical method
-that uses electromagnetic waves to image the subsurface. It is widely
-used in engineering, archaeology, environmental studies, and
-geotechnical investigations.</p>
-<p>GPR systems send short electromagnetic pulses into the ground and
-record the reflections that occur at interfaces of materials with
-different dielectric properties. The result is a set of time-based
-signals called <em>traces</em> that capture subsurface reflections at a
-specific location.</p>
+known as solid earth geophysics. Applied geophysics’ covers everything
+from experiments to determine the thickness of the crust (which is
+important in hydrocarbon exploration) to studies of shallow structures
+for engineering site investigations, exploring for groundwater and for
+minerals and other economic resources, to trying to locate narrow mine
+shafts or other forms of buried cavities, or the mapping of
+archaeological remains, or locating buried pipes and cables – but where
+in general the total depth of investigation is usually less than 100
+m.</p>
+<p>Ground penetrating radar (GPR) is now a well-accepted geophysical
+technique. The method uses radio waves to probe “the ground”. In its
+earliest inception, GPR was primarily applied to natural geologic
+materials. Now GPR is equally well applied to a host of other media such
+as wood, concrete, and asphalt. The most common form of GPR measurements
+deploys a transmitter and a receiver in a fixed geometry, which are
+moved over the surface to detect reflections from subsurface features.
+Ground penetrating radar systems are conceptually simple; the objective
+is to measure field amplitude versus time after excitation. The heart of
+a GPR system is the timing unit, which controls the generation and
+detection of signals. Most GPRs operate in the time domain.</p>
 <p>In this episode, we’ll introduce how to read and visualize a GPR
 trace from SEG-Y data using Python and the <code>obspy</code>
 library.</p>
