@@ -13,6 +13,7 @@ exercises: 2
 :::::: objectives
 
 - Describe background removal
+- Azin: change
 
 ::::::
 
