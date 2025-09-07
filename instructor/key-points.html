@@ -463,7 +463,16 @@ conversion and structural imaging.</li>
 </ul></section><section id="Bandpass Filtering"><h2 class="section-heading"><a href="Bandpass%20Filtering.html">Bandpass Filtering</a></h2>
 <hr class="half-width">
 <ul>
-<li>GPR AGC</li>
+<li>GPR data often contain low-frequency drift and high-frequency noise;
+a bandpass suppresses both.</li>
+<li>Cutoffs must lie within (0, Nyquist); selecting them near the
+antenna’s effective bandwidth improves SNR.</li>
+<li>Zero-phase forward-backward filtering (filtfilt) preserves arrival
+timing and polarity.</li>
+<li>Overly narrow passbands may distort wavelets or remove useful
+signal.</li>
+<li>Frequency spectra of representative traces help justify passband
+choices quantitatively.</li>
 </ul></section><section id="Deconvolution"><h2 class="section-heading"><a href="Deconvolution.html">Deconvolution</a></h2>
 <hr class="half-width">
 <ul>

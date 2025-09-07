@@ -1819,7 +1819,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-Bandpass Filtering"><p>Content from <a href="Bandpass%20Filtering.html">Bandpass Filtering</a></p>
 <hr>
-<p>Last updated on 2025-04-16 |
+<p>Last updated on 2025-09-07 |
 
         <a href="https://github.com/Azinkarimzad/Imaging_the_unseen/edit/main/episodes/Bandpass%20Filtering.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 12 minutes</p>
@@ -1834,7 +1834,16 @@ any links that you are not going to use.
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>What isAGC</li>
+<li>What is a bandpass filter in the context of GPR signal
+processing?</li>
+<li>Why apply a bandpass filter to GPR traces before
+interpretation?</li>
+<li>How do sampling frequency and Nyquist frequency constrain the choice
+of cutoffs?</li>
+<li>How does zero-phase filtering affect waveform shape compared with
+causal filtering?</li>
+<li>How can frequency spectra guide the selection of passband
+limits?</li>
 </ul>
 </div>
 </div>
@@ -1844,7 +1853,15 @@ any links that you are not going to use.
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <ul>
-<li>Describe AGC</li>
+<li>Define bandpass filtering and relate it to antenna bandwidth and
+recorded noise.</li>
+<li>Compute sampling and Nyquist frequencies from SEG Y headers and
+validate cutoffs.</li>
+<li>Apply a zero-phase Butterworth bandpass to a 2D GPR section without
+altering your code.</li>
+<li>Compare radargrams and trace spectra before and after filtering to
+assess effectiveness.</li>
+<li>Describe trade-offs when tightening or relaxing the passband.</li>
 </ul>
 </div>
 </div>
@@ -1859,13 +1876,43 @@ any links that you are not going to use.
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>GPR AGC</li>
+<li>GPR data often contain low-frequency drift and high-frequency noise;
+a bandpass suppresses both.</li>
+<li>Cutoffs must lie within (0, Nyquist); selecting them near the
+antenna’s effective bandwidth improves SNR.</li>
+<li>Zero-phase forward-backward filtering (filtfilt) preserves arrival
+timing and polarity.</li>
+<li>Overly narrow passbands may distort wavelets or remove useful
+signal.</li>
+<li>Frequency spectra of representative traces help justify passband
+choices quantitatively.</li>
 </ul>
 </div>
 </div>
 </div>
 <div class="introduction">
-<p>Ground Penetrating Radar (GPR) write about AGC:</p>
+<p>GPR antennas radiate broadband pulses with finite bandwidth. Recorded
+sections typically include low-frequency components from coupling or
+instrumentation and high-frequency noise from electronics or
+environment. A <strong>bandpass filter</strong> retains a chosen
+frequency band while attenuating energy below and above it. In practice,
+cutoffs should respect the <strong>Nyquist frequency</strong> and
+bracket the dominant signal band suggested by the antenna type and the
+observed spectra.</p>
+<p>This lesson applies a <strong>zero-phase Butterworth
+bandpass</strong> to a 2D section. Zero-phase filtering via
+forward-backward application avoids phase distortion, so reflector
+timing is preserved. We compute sampling and Nyquist frequencies from
+SEG Y headers, apply the filter trace-by-trace, and evaluate the result
+using both images and amplitude spectra.</p>
+</div>
+<section><h2 class="section-heading" id="example-1-zero-phase-butterworth-bandpass-on-a-2d-gpr-section">Example 1 — Zero-phase Butterworth bandpass on a 2D GPR section<a class="anchor" aria-label="anchor" href="#example-1-zero-phase-butterworth-bandpass-on-a-2d-gpr-section"></a>
+</h2>
+<hr class="half-width">
+<p>The code below reads a SEG Y profile, derives the sampling frequency,
+applies a fourth-order Butterworth bandpass with cutoffs as percentages
+of Nyquist, and compares sections and spectra before and after
+filtering.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -1951,10 +1998,117 @@ any links that you are not going to use.
 <span id="cb1-80"><a href="#cb1-80" tabindex="-1"></a>plt.title(<span class="st">"Frequency Spectrum of Middle Trace"</span>)</span>
 <span id="cb1-81"><a href="#cb1-81" tabindex="-1"></a>plt.legend()</span>
 <span id="cb1-82"><a href="#cb1-82" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb1-83"><a href="#cb1-83" tabindex="-1"></a>plt.show()</span>
-<span id="cb1-84"><a href="#cb1-84" tabindex="-1"></a></span></code></pre>
+<span id="cb1-83"><a href="#cb1-83" tabindex="-1"></a>plt.show()</span></code></pre>
 </div>
-</div></section><section id="aio-Deconvolution"><p>Content from <a href="Deconvolution.html">Deconvolution</a></p>
+<p>Explanation</p>
+<p>Design the filter The cutoffs are normalized by Nyquist to design a
+fourth-order Butterworth bandpass. This shape is smooth in magnitude
+and, with forward-backward application, zero-phase in the output.</p>
+<p>Validate cutoffs The code checks that both cutoffs fall strictly
+between zero and Nyquist. Invalid values raise a clear error.</p>
+<p>Apply zero-phase filtering Each trace is filtered with filtfilt,
+which runs the filter forward and backward to cancel phase shift while
+doubling the effective order.</p>
+<p>Compute sampling parameters The sample interval from the SEG Y binary
+header gives fs in hertz and nyquist = fs/2. These determine the
+allowable band.</p>
+<p>Inspect results in time and frequency Side-by-side images show
+structural changes after filtering. A frequency spectrum of a
+representative trace quantifies which bands were attenuated or
+retained.</p>
+<p>Interpretation Suppressing very low and very high frequencies
+clarifies reflections within the passband. If reflections weaken or look
+distorted, the passband is too narrow; relax the cutoffs toward the
+data’s dominant band.</p>
+</section><section><h2 class="section-heading" id="example-2-comparing-multiple-passbands">Example 2 — Comparing Multiple Passbands<a class="anchor" aria-label="anchor" href="#example-2-comparing-multiple-passbands"></a>
+</h2>
+<hr class="half-width">
+<p>It is often unclear which cutoff frequencies best enhance
+reflections. In this example, we apply three different passbands and
+compare their effects on both the radargrams and frequency spectra.</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Define three passband settings as fractions of Nyquist</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>passbands <span class="op">=</span> [</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>    (<span class="fl">0.02</span> <span class="op">*</span> nyquist, <span class="fl">0.80</span> <span class="op">*</span> nyquist),  <span class="co"># wide band</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    (<span class="fl">0.05</span> <span class="op">*</span> nyquist, <span class="fl">0.50</span> <span class="op">*</span> nyquist),  <span class="co"># medium band</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>    (<span class="fl">0.10</span> <span class="op">*</span> nyquist, <span class="fl">0.30</span> <span class="op">*</span> nyquist)   <span class="co"># narrow band</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>]</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">6</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="cf">for</span> i, (lowcut, highcut) <span class="kw">in</span> <span class="bu">enumerate</span>(passbands):</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    filtered <span class="op">=</span> bandpass_filter(data, lowcut, highcut, fs)</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>    axs[i].imshow(filtered, cmap<span class="op">=</span><span class="st">"gray"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>, origin<span class="op">=</span><span class="st">"upper"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    axs[i].set_title(<span class="ss">f"</span><span class="sc">{</span>lowcut<span class="op">/</span><span class="fl">1e6</span><span class="sc">:.2f}</span><span class="ss">–</span><span class="sc">{</span>highcut<span class="op">/</span><span class="fl">1e6</span><span class="sc">:.2f}</span><span class="ss"> MHz"</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    axs[i].set_xlabel(<span class="st">"Trace"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>        axs[i].set_ylabel(<span class="st">"Sample"</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>plt.show()</span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co"># Plot spectra for the middle trace across all three passbands</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="cf">for</span> (lowcut, highcut) <span class="kw">in</span> passbands:</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>    filtered <span class="op">=</span> bandpass_filter(data, lowcut, highcut, fs)</span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a>    plot_frequency_spectrum(filtered[:, middle_trace_idx], fs,</span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a>                            title<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>lowcut<span class="op">/</span><span class="fl">1e6</span><span class="sc">:.2f}</span><span class="ss">–</span><span class="sc">{</span>highcut<span class="op">/</span><span class="fl">1e6</span><span class="sc">:.2f}</span><span class="ss"> MHz"</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a>plot_frequency_spectrum(data[:, middle_trace_idx], fs, title<span class="op">=</span><span class="st">"Unfiltered"</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a>plt.title(<span class="st">"Frequency Spectra for Different Passbands"</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a>plt.show()</span></code></pre>
+</div>
+<p>Explanation</p>
+<p>Wide passband keeps nearly all signal but lets noise through.</p>
+<p>Medium passband balances suppression of noise with preservation of
+reflections.</p>
+<p>Narrow passband reduces noise strongly but can distort wavelets and
+weaken hyperbolas.</p>
+<p>Comparing spectra confirms which frequencies remain in each case.</p>
+</section><section><h2 class="section-heading" id="example-3-filtering-individual-traces-for-qc">Example 3 — Filtering Individual Traces for QC<a class="anchor" aria-label="anchor" href="#example-3-filtering-individual-traces-for-qc"></a>
+</h2>
+<hr class="half-width">
+<p>Before filtering the entire dataset, it is useful to test the filter
+on a few representative traces. This example applies the same bandpass
+to three traces and compares them with the originals.</p>
+<pre><code># Select three traces across the profile
+trace_indices = [n_traces // 4, n_traces // 2, 3 * n_traces // 4]
+
+lowcut = 0.05 * nyquist
+highcut = 0.95 * nyquist
+
+plt.figure(figsize=(12, 8))
+
+for i, idx in enumerate(trace_indices, 1):
+    original = data[:, idx]
+    filtered = bandpass_filter(data[:, [idx]], lowcut, highcut, fs).flatten()
+
+    plt.subplot(3, 1, i)
+    plt.plot(original, label="Original", alpha=0.6)
+    plt.plot(filtered, label="Filtered", linestyle="--")
+    plt.title(f"Trace {idx} before and after bandpass")
+    plt.xlabel("Sample")
+    plt.ylabel("Amplitude")
+    if i == 1:
+        plt.legend()
+
+plt.tight_layout()
+plt.show()
+</code></pre>
+<p>Explanation</p>
+<p>Original vs filtered traces plotted directly help confirm that
+filtering removes unwanted frequencies without destroying arrivals.</p>
+<p>Students can visually check if the wavelet shape is preserved.</p>
+<p>This is a simple quality-control step before applying the filter to
+the full dataset.</p>
+<!--
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use.
+ -->
+</section></section><section id="aio-Deconvolution"><p>Content from <a href="Deconvolution.html">Deconvolution</a></p>
 <hr>
 <p>Last updated on 2025-04-16 |
 

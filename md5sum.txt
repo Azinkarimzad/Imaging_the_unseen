@@ -9,7 +9,7 @@
 "episodes/AGC Implementation.md" "fd58afa93e943eff8ff66cf3de1042d1" "site/built/AGC Implementation.md" "2025-09-07"
 "episodes/Background Removal.md" "a1d97b3e19c94ae54b64f12ea9d084b5" "site/built/Background Removal.md" "2025-09-07"
 "episodes/Time-Zero Correction.md" "40bb5f0bc86e4156070bf7f1833c61ca" "site/built/Time-Zero Correction.md" "2025-09-07"
-"episodes/Bandpass Filtering.md" "7776981d0356fa698f570e9e0257c85d" "site/built/Bandpass Filtering.md" "2025-04-16"
+"episodes/Bandpass Filtering.md" "266fd3448698f9804fdb8dfc44e71287" "site/built/Bandpass Filtering.md" "2025-09-07"
 "episodes/Deconvolution.md" "10e2cfc4b388a420ad9b8d88035427dd" "site/built/Deconvolution.md" "2025-04-16"
 "episodes/Wrap-up and Discussion.md" "ca04a213a77c7f75873bc41da154f961" "site/built/Wrap-up and Discussion.md" "2025-04-14"
 "instructors/instructor-notes.md" "cae72b6712578d74a49fea7513099f8c" "site/built/instructor-notes.md" "2023-03-16"
