@@ -495,6 +495,11 @@ appearance prior to any processing.</p>
 ground-coupled system. The file may contain variable-length traces. The
 sampling interval, number of samples, and textual or binary headers
 carry acquisition metadata.</p>
+<p>Example 1: Plot a single trace</p>
+<p>Example 2: Build a radargram</p>
+<p>Example 3: Inspect metadata</p>
+<p>Example 4: Add a time axis</p>
+<p>Example 5: Apply a gain</p>
 </div>
 <div class="section level2">
 <h2 id="example-1-plot-a-single-trace-for-a-quick-look">Example 1 — Plot a single trace for a quick look<a class="anchor" aria-label="anchor" href="#example-1-plot-a-single-trace-for-a-quick-look"></a></h2>
@@ -544,6 +549,9 @@ visible.</p>
 interval.</p>
 <p>Look for saturation or DC drift that might require dewow in further
 processing.</p>
+</div>
+<div class="section level2">
+<h2 id="example-2-build-a-simple-radargram-image-from-all-traces">Example 2 — Build a simple radargram image from all traces<a class="anchor" aria-label="anchor" href="#example-2-build-a-simple-radargram-image-from-all-traces"></a></h2>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -573,6 +581,127 @@ processing.</p>
 <span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>plt.colorbar(label<span class="op">=</span><span class="st">"Amplitude"</span>)</span>
 <span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a>plt.show()</span></code></pre>
 </div>
+<p>What this code does, step by step:</p>
+<p>Read the file and collect traces: same reader as Example 1.</p>
+<p>Determine array geometry: n_traces is the lateral dimension; max_len
+is the longest trace length.</p>
+<p>Allocate a section matrix: data is a two-dimensional array with shape
+(time samples, trace number).</p>
+<p>Populate the matrix: for each trace, copy its samples into the
+corresponding column; shorter traces remain zero-padded at late
+times.</p>
+<p>Display the radargram: imshow renders amplitude as image
+intensity.</p>
+<p>origin=“upper” places early time at the top of the image.</p>
+<p>aspect=“auto” allows traces to fill the figure width.</p>
+<p>cmap=“gray” uses a neutral colour map suited to signed
+amplitudes.</p>
+<p>interpolation=“none” avoids smoothing that could hide thin
+reflectors.</p>
+<p>Interpretation note: continuous subhorizontal events suggest
+layering; symmetric hyperbolas indicate compact objects. Polarity is
+arbitrary at this stage and depends on plotting conventions.</p>
+<p>Add-on checks on performace:</p>
+<p>Verify whether zero padding at late times creates a visible edge; in
+later processing you may want to trim to a common time window.</p>
+<p>If position ticks are uneven, later steps should remap traces to true
+distance before velocity analysis.</p>
+<p>To relate time samples to actual time, multiply sample index by the
+per-trace sample interval from headers.</p>
+</div>
+<div class="section level2">
+<h2 id="example-3-inspect-acquisition-metadata">Example 3 — Inspect acquisition metadata<a class="anchor" aria-label="anchor" href="#example-3-inspect-acquisition-metadata"></a></h2>
+<p>SEG-Y files store much more than amplitudes. Each trace contains a
+header with information such as the number of samples, sample interval,
+and trace sequence number. Reading these values is a first
+quality-control step.</p>
+<pre><code>from obspy.io.segy.segy import _read_segy
+
+stream = _read_segy("LINE01.sgy", headonly=True)
+
+# Access the first trace header
+tr0 = stream.traces[0]
+
+print("Number of samples:", tr0.header.number_of_samples)
+print("Sample interval (microseconds):", tr0.header.sample_interval_in_ms_for_this_trace)
+print("Trace sequence number:", tr0.header.trace_sequence_number_within_line)
+</code></pre>
+<p>Explanation:</p>
+<p>headonly=True avoids loading amplitudes and reads only headers.</p>
+<p>number_of_samples × sample_interval gives the total time window.</p>
+<p>Trace sequence numbers are useful for checking completeness of the
+dataset.</p>
+<p>Inspecting headers ensures that later visualizations are correctly
+scaled.</p>
+</div>
+<div class="section level2">
+<h2 id="example-4-adding-a-time-axis-to-a-trace">Example 4 — Adding a time axis to a trace<a class="anchor" aria-label="anchor" href="#example-4-adding-a-time-axis-to-a-trace"></a></h2>
+<p>Plots by sample index are useful, but a time axis makes the physics
+clearer. We can build a time vector from the sample interval stored in
+the header.</p>
+<pre><code>import matplotlib.pyplot as plt
+from obspy.io.segy.segy import _read_segy
+import numpy as np
+
+stream = _read_segy("LINE01.sgy", headonly=False)
+tr0 = stream.traces[0]
+
+# Extract sample interval (microseconds) and build time axis
+dt = tr0.header.sample_interval_in_ms_for_this_trace  # in microseconds
+n_samples = len(tr0.data)
+time = np.arange(n_samples) * dt * 1e-6  # convert to seconds
+
+# Plot trace with time axis
+plt.figure(figsize=(6, 4))
+plt.plot(time, tr0.data)
+plt.title("First Trace with Time Axis")
+plt.xlabel("Two-way travel time [s]")
+plt.ylabel("Amplitude")
+plt.grid(True)
+plt.show()</code></pre>
+<p>Explanation:</p>
+<p>The x-axis now shows two-way travel time in seconds.</p>
+<p>This connects the data to subsurface depth, once a velocity model is
+assumed.</p>
+<p>Early samples correspond to shallow reflections; later samples
+correspond to deeper features.</p>
+</div>
+<div class="section level2">
+<h2 id="example-5-applying-a-simple-gain">Example 5 — Applying a simple gain<a class="anchor" aria-label="anchor" href="#example-5-applying-a-simple-gain"></a></h2>
+<p>Near-surface reflections are often strong, while deeper reflections
+appear weak. A gain function can emphasize later arrivals. This example
+applies a simple exponential gain to one trace.</p>
+<pre><code>import numpy as np
+import matplotlib.pyplot as plt
+from obspy.io.segy.segy import _read_segy
+
+stream = _read_segy("LINE01.sgy", headonly=False)
+tr0 = stream.traces[0]
+
+# Build sample index array
+n_samples = len(tr0.data)
+time = np.arange(n_samples)
+
+# Apply exponential gain
+gain = np.exp(time / (0.2 * n_samples))  # adjust denominator to control strength
+trace_gain = tr0.data * gain
+
+# Compare original and gained traces
+plt.figure(figsize=(6, 4))
+plt.plot(time, tr0.data, label="Original")
+plt.plot(time, trace_gain, label="With exponential gain", alpha=0.7)
+plt.title("Trace with and without Gain")
+plt.xlabel("Sample Index")
+plt.ylabel("Amplitude")
+plt.legend()
+plt.grid(True)
+plt.show()</code></pre>
+<p>Explanation:</p>
+<p>The exponential gain increases amplitudes at later times.</p>
+<p>This helps reveal weak deeper events that might otherwise be
+invisible.</p>
+<p>The trade-off is that noise at late times is also amplified.</p>
+<p>Students learn the importance of balancing clarity and noise.</p>
 </div>
 </div>
 <!--
