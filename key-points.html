@@ -421,7 +421,17 @@ resolves finer targets at shallower depths.</li>
 </ul></section><section id="AGC Implementation"><h2 class="section-heading"><a href="AGC%20Implementation.html">AGC</a></h2>
 <hr class="half-width">
 <ul>
-<li>GPR AGC</li>
+<li><p>GPR amplitudes decay with travel time due to geometric spreading,
+absorption, and scattering.</p></li>
+<li><p>Automatic Gain Control (AGC) rescales amplitudes within a moving
+window to balance early and late signals.</p></li>
+<li><p>Window length controls the behavior: short windows emphasize
+local contrasts but may boost noise, long windows smooth variations but
+may underrepresent weak reflections.</p></li>
+<li><p>AGC does not recover true amplitudes; it enhances relative
+visibility for interpretation.</p></li>
+<li><p>In Python, AGC can be implemented by normalizing each trace
+sample by the RMS of its surrounding window.</p></li>
 </ul></section><section id="Background Removal"><h2 class="section-heading"><a href="Background%20Removal.html">Background Removal</a></h2>
 <hr class="half-width">
 <ul>
