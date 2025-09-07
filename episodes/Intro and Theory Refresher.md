@@ -118,6 +118,16 @@ Example data context
 
 Assume LINE01.sgy is a single profile recorded with an air-coupled or ground-coupled system. The file may contain variable-length traces. The sampling interval, number of samples, and textual or binary headers carry acquisition metadata.
 
+Example 1: Plot a single trace
+
+Example 2: Build a radargram
+
+Example 3: Inspect metadata
+
+Example 4: Add a time axis
+
+Example 5: Apply a gain
+
 ## Example 1 — Plot a single trace for a quick look
 
 ```python
@@ -163,6 +173,8 @@ convert sample index to time using the trace header sample interval.
 
 Look for saturation or DC drift that might require dewow in further processing.
 
+## Example 2 — Build a simple radargram image from all traces
+
 ```python
 import matplotlib.pyplot as plt
 from obspy.io.segy.segy import _read_segy
@@ -191,6 +203,133 @@ plt.colorbar(label="Amplitude")
 plt.show()
 
 ```
+What this code does, step by step:
 
+Read the file and collect traces: same reader as Example 1.
 
+Determine array geometry: n_traces is the lateral dimension; max_len is the longest trace length.
+
+Allocate a section matrix: data is a two-dimensional array with shape (time samples, trace number).
+
+Populate the matrix: for each trace, copy its samples into the corresponding column; shorter traces remain zero-padded at late times.
+
+Display the radargram: imshow renders amplitude as image intensity.
+
+origin="upper" places early time at the top of the image.
+
+aspect="auto" allows traces to fill the figure width.
+
+cmap="gray" uses a neutral colour map suited to signed amplitudes.
+
+interpolation="none" avoids smoothing that could hide thin reflectors.
+
+Interpretation note: continuous subhorizontal events suggest layering; symmetric hyperbolas indicate compact objects. Polarity is arbitrary at this stage and depends on plotting conventions.
+
+Add-on checks on performace:
+
+Verify whether zero padding at late times creates a visible edge; in later processing you may want to trim to a common time window.
+
+If position ticks are uneven, later steps should remap traces to true distance before velocity analysis.
+
+To relate time samples to actual time, multiply sample index by the per-trace sample interval from headers.
+
+## Example 3 — Inspect acquisition metadata
+SEG-Y files store much more than amplitudes. Each trace contains a header with information such as the number of samples, sample interval, and trace sequence number. Reading these values is a first quality-control step.
+
+```
+from obspy.io.segy.segy import _read_segy
+
+stream = _read_segy("LINE01.sgy", headonly=True)
+
+# Access the first trace header
+tr0 = stream.traces[0]
+
+print("Number of samples:", tr0.header.number_of_samples)
+print("Sample interval (microseconds):", tr0.header.sample_interval_in_ms_for_this_trace)
+print("Trace sequence number:", tr0.header.trace_sequence_number_within_line)
+
+```
+Explanation:
+
+headonly=True avoids loading amplitudes and reads only headers.
+
+number_of_samples × sample_interval gives the total time window.
+
+Trace sequence numbers are useful for checking completeness of the dataset.
+
+Inspecting headers ensures that later visualizations are correctly scaled.
+
+## Example 4 — Adding a time axis to a trace
+
+Plots by sample index are useful, but a time axis makes the physics clearer. We can build a time vector from the sample interval stored in the header.
+```
+import matplotlib.pyplot as plt
+from obspy.io.segy.segy import _read_segy
+import numpy as np
+
+stream = _read_segy("LINE01.sgy", headonly=False)
+tr0 = stream.traces[0]
+
+# Extract sample interval (microseconds) and build time axis
+dt = tr0.header.sample_interval_in_ms_for_this_trace  # in microseconds
+n_samples = len(tr0.data)
+time = np.arange(n_samples) * dt * 1e-6  # convert to seconds
+
+# Plot trace with time axis
+plt.figure(figsize=(6, 4))
+plt.plot(time, tr0.data)
+plt.title("First Trace with Time Axis")
+plt.xlabel("Two-way travel time [s]")
+plt.ylabel("Amplitude")
+plt.grid(True)
+plt.show()
+```
+Explanation:
+
+The x-axis now shows two-way travel time in seconds.
+
+This connects the data to subsurface depth, once a velocity model is assumed.
+
+Early samples correspond to shallow reflections; later samples correspond to deeper features.
+
+## Example 5 — Applying a simple gain
+
+Near-surface reflections are often strong, while deeper reflections appear weak. A gain function can emphasize later arrivals. This example applies a simple exponential gain to one trace.
+
+```
+import numpy as np
+import matplotlib.pyplot as plt
+from obspy.io.segy.segy import _read_segy
+
+stream = _read_segy("LINE01.sgy", headonly=False)
+tr0 = stream.traces[0]
+
+# Build sample index array
+n_samples = len(tr0.data)
+time = np.arange(n_samples)
+
+# Apply exponential gain
+gain = np.exp(time / (0.2 * n_samples))  # adjust denominator to control strength
+trace_gain = tr0.data * gain
+
+# Compare original and gained traces
+plt.figure(figsize=(6, 4))
+plt.plot(time, tr0.data, label="Original")
+plt.plot(time, trace_gain, label="With exponential gain", alpha=0.7)
+plt.title("Trace with and without Gain")
+plt.xlabel("Sample Index")
+plt.ylabel("Amplitude")
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+Explanation:
+
+The exponential gain increases amplitudes at later times.
+
+This helps reveal weak deeper events that might otherwise be invisible.
+
+The trade-off is that noise at late times is also amplified.
+
+Students learn the importance of balancing clarity and noise.
 ::::::
