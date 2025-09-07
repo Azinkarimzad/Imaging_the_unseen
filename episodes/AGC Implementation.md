@@ -247,7 +247,7 @@ Long windows such as 200 samples produce smoother results that preserve broader 
 A practical rule of thumb is to select a window corresponding to a few to several periods of the dominant frequency:
 
 $$
-\text{window\_len} \approx k \times \frac{1}{f_c\,\Delta t}
+\text{window_len} \approx k \times \frac{1}{f_c\,\Delta t}
 $$
 
 where f_c is the antenna center frequency and Δt is the sample interval; choose k between roughly three and ten.
