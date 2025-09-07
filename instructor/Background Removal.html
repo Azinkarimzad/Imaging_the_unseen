@@ -337,7 +337,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Background Removal</h1>
-        <p>Last updated on 2025-09-02 |
+        <p>Last updated on 2025-09-07 |
 
         <a href="https://github.com/Azinkarimzad/Imaging_the_unseen/edit/main/episodes/Background%20Removal.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -358,7 +358,11 @@
 <div class="card-body">
 <div class="inner">
 <h3 class="card-title">Questions</h3>
-<ul><li>What is bakground removal</li>
+<ul><li><p>What is background removal in GPR data processing?</p></li>
+<li><p>Why is background removal needed for clearer
+interpretation?</p></li>
+<li><p>How can background removal be implemented
+programmatically?</p></li>
 </ul></div>
 </div>
 </div>
@@ -366,9 +370,12 @@
 <div class="card-body">
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
-<ul><li>Describe background removal</li>
-<li>Azin: change</li>
-<li>Parvin is here</li>
+<ul><li><p>Define the concept of background in GPR sections and explain its
+origin.</p></li>
+<li><p>Demonstrate how to remove background by subtracting the average
+trace.</p></li>
+<li><p>Evaluate the effect of background removal on data clarity and
+reflector visibility.</p></li>
 </ul></div>
 </div>
 </div>
@@ -381,12 +388,36 @@
 <span class="callout-header">Key Points</span>
 <div class="callout-inner">
 <div class="callout-content">
-<ul><li>GPR bkr</li>
+<ul><li><p>Background in GPR sections often comes from consistent system
+responses, coupling effects, or horizontal banding.</p></li>
+<li><p>Removing the background enhances true reflections and reduces
+horizontal noise.</p></li>
+<li><p>A simple method is subtracting the mean trace across all
+traces.</p></li>
 </ul></div>
 </div>
 </div>
 <div class="introduction">
-<p>Ground Penetrating Radar (GPR) write about bkr:</p>
+<p>Ground Penetrating Radar (GPR) data often contain <strong>background
+noise</strong> that is unrelated to true subsurface reflections.<br>
+This background usually appears as horizontal banding or low-frequency
+components repeated across all traces.<br>
+It originates from several sources:<br>
+- the direct wave and antenna ringing,<br>
+- system electronics,<br>
+- consistent ground coupling responses.</p>
+<p>If left untreated, this background can mask weak reflections,
+especially deeper ones.</p>
+<p><strong>Background removal</strong> is a common preprocessing step
+that improves the visibility of hyperbolas and stratigraphic
+features.<br>
+The simplest approach is to compute the <strong>average trace</strong>
+across all traces in a section and subtract it from each individual
+trace.<br>
+This removes energy that is consistent everywhere (the “background”)
+while preserving local variations that indicate subsurface features.</p>
+<div class="section level2">
+<h2 id="example-1-removing-background-by-subtracting-the-mean-trace">Example 1 — Removing background by subtracting the mean trace<a class="anchor" aria-label="anchor" href="#example-1-removing-background-by-subtracting-the-mean-trace"></a></h2>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -406,6 +437,111 @@
 <span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>plt.ylabel(<span class="st">"Time Sample"</span>)</span>
 <span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>plt.colorbar(label<span class="op">=</span><span class="st">"Amplitude"</span>)</span>
 <span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>plt.show()</span></code></pre>
+</div>
+<p>Explanation:</p>
+<p>Define the function</p>
+<p>np.mean(data, axis=1, keepdims=True) computes the average amplitude
+across all traces, at each time sample.</p>
+<p>The result is a “mean trace” representing the background that is
+common to all traces.</p>
+<p>keepdims=True preserves the two-dimensional shape so subtraction
+works cleanly.</p>
+<p>Subtract the background</p>
+<p>data - background removes this mean trace from each column (trace) in
+the data section.</p>
+<p>What remains are relative deviations, i.e. actual subsurface
+reflections.</p>
+<p>Apply to processed section</p>
+<p>In this case, agc_result is the section after Automatic Gain
+Control.</p>
+<p>Applying background removal after AGC makes weaker reflectors
+clearer.</p>
+<p>Plot</p>
+<p>imshow shows the new radargram with background removed.</p>
+<p>Horizontal banding should be reduced, and hyperbolic events should
+stand out.</p>
+</div>
+<div class="section level2">
+<h2 id="example-2-visual-comparison-before-vs-after-background-removal">Example 2 — Visual comparison: before vs after background
+removal<a class="anchor" aria-label="anchor" href="#example-2-visual-comparison-before-vs-after-background-removal"></a></h2>
+<p>This example shows the original section and the background-removed
+section, so learners can judge the effect directly.</p>
+<pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+def remove_background(data):
+    # Estimate background as the mean across traces at each time sample
+    background = np.mean(data, axis=1, keepdims=True)
+    # Subtract the background from every trace
+    return data - background, background
+
+# Assume `agc_result` is your AGC-processed section with shape [samples, traces]
+data_bg_removed, estimated_background = remove_background(agc_result)
+
+# Plot original section
+plt.figure(figsize=(12, 5))
+plt.imshow(agc_result, cmap="gray", aspect="auto", origin="upper", interpolation="none")
+plt.title("Original Section (after AGC, before background removal)")
+plt.xlabel("Trace Number")
+plt.ylabel("Time Sample")
+plt.colorbar(label="Amplitude")
+plt.show()
+
+# Plot background-removed section
+plt.figure(figsize=(12, 5))
+plt.imshow(data_bg_removed, cmap="gray", aspect="auto", origin="upper", interpolation="none")
+plt.title("Section after Background Removal (mean trace subtraction)")
+plt.xlabel("Trace Number")
+plt.ylabel("Time Sample")
+plt.colorbar(label="Amplitude")
+plt.show()
+
+# Optional: visualize the estimated background (as an image)
+plt.figure(figsize=(12, 5))
+plt.imshow(np.repeat(estimated_background, agc_result.shape[1], axis=1),
+           cmap="gray", aspect="auto", origin="upper", interpolation="none")
+plt.title("Estimated Background (mean across traces, repeated laterally)")
+plt.xlabel("Trace Number")
+plt.ylabel("Time Sample")
+plt.colorbar(label="Amplitude")
+plt.show()</code></pre>
+<p>Explanation:</p>
+<p>The estimated background is the mean across traces at each time
+sample; repeating it laterally shows the component being removed.</p>
+<p>Comparing the two sections highlights how horizontal banding is
+reduced and diffractive features become clearer.</p>
+</div>
+<div class="section level2">
+<h2 id="example-3-robust-background-removal-using-median-trace">Example 3 — Robust background removal using median trace<a class="anchor" aria-label="anchor" href="#example-3-robust-background-removal-using-median-trace"></a></h2>
+<p>Mean subtraction can be sensitive to a few large amplitudes. A median
+is more robust when strong reflectors or outliers are present. This
+example subtracts the per-sample median across traces.</p>
+<pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+def remove_background_median(data):
+    # Estimate background as the median across traces at each time sample (robust to outliers)
+    background_med = np.median(data, axis=1, keepdims=True)
+    # Subtract the median background from every trace
+    return data - background_med, background_med
+
+# Apply robust background removal
+data_bg_removed_med, estimated_background_med = remove_background_median(agc_result)
+
+# Plot result
+plt.figure(figsize=(12, 5))
+plt.imshow(data_bg_removed_med, cmap="gray", aspect="auto", origin="upper", interpolation="none")
+plt.title("Section after Background Removal (median trace subtraction)")
+plt.xlabel("Trace Number")
+plt.ylabel("Time Sample")
+plt.colorbar(label="Amplitude")
+plt.show()</code></pre>
+<p>Explanation:</p>
+<p>Median across traces at each time sample suppresses persistent
+horizontal components while resisting the influence of a few large
+events.</p>
+<p>Resulting sections often show cleaner backgrounds when strong
+isolated reflectors are present.</p>
 </div>
 </div>
 <!--
@@ -473,7 +609,7 @@ any links that you are not going to use.
   "url": "https://Azinkarimzad.github.io/Imaging_the_unseen/instructor/Background Removal.html",
   "identifier": "https://Azinkarimzad.github.io/Imaging_the_unseen/instructor/Background Removal.html",
   "dateCreated": "2025-09-07",
-  "dateModified": "2025-09-02",
+  "dateModified": "2025-09-07",
   "datePublished": "2025-09-07"
 }
 
