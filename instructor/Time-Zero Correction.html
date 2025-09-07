@@ -242,12 +242,22 @@
 <div class="accordion accordion-flush" id="accordionFlushcurrent">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-headingcurrent">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
         5. Time-Zero Correction
         </span>
-      
+      </button>
     </div><!--/div.accordion-header-->
+
+    <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
+      <div class="accordion-body">
+        <ul><li><a href="#example-1-automatic-time-zero-correction-using-first-break-detection">Example 1 — Automatic Time-Zero Correction using First-Break
+Detection</a></li>
+<li><a href="#example-2-manual-time-zero-correction-using-a-reference-trace">Example 2 — Manual Time-Zero Correction using a Reference Trace</a></li>
+<li><a href="#example-3-visualizing-first-break-picks-across-the-section">Example 3 — Visualizing First-Break Picks Across the Section</a></li>
+        </ul></div><!--/div.accordion-body-->
+    </div><!--/div.accordion-collapse-->
 
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
@@ -337,7 +347,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Time-Zero Correction</h1>
-        <p>Last updated on 2025-04-16 |
+        <p>Last updated on 2025-09-07 |
 
         <a href="https://github.com/Azinkarimzad/Imaging_the_unseen/edit/main/episodes/Time-Zero%20Correction.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -358,7 +368,13 @@
 <div class="card-body">
 <div class="inner">
 <h3 class="card-title">Questions</h3>
-<ul><li>What is bakground removal</li>
+<ul><li>What does time-zero represent in a GPR trace?<br></li>
+<li>Why do system delays and antenna geometry cause time-zero to be
+shifted?<br></li>
+<li>How can first breaks be detected automatically in traces?<br></li>
+<li>What happens to interpretation if time-zero is not corrected?<br></li>
+<li>How can we compare sections before and after time-zero
+correction?</li>
 </ul></div>
 </div>
 </div>
@@ -366,7 +382,15 @@
 <div class="card-body">
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
-<ul><li>Describe background removal</li>
+<ul><li>Define time-zero and explain its importance for accurate depth
+conversion.<br></li>
+<li>Identify common causes of time-zero shifts in GPR data.<br></li>
+<li>Demonstrate an automatic time-zero correction workflow using
+first-break detection.<br></li>
+<li>Visualize the distribution of first-break picks and assess their
+consistency.<br></li>
+<li>Compare radargrams before and after correction to evaluate
+improvements.</li>
 </ul></div>
 </div>
 </div>
@@ -379,12 +403,55 @@
 <span class="callout-header">Key Points</span>
 <div class="callout-inner">
 <div class="callout-content">
-<ul><li>GPR bkr</li>
+<ul><li>Time-zero is the instant when the transmitted pulse enters the
+ground.<br></li>
+<li>System delays and geometry shift the apparent time-zero away from
+zero samples.<br></li>
+<li>Automatic methods detect first breaks using the signal envelope and
+amplitude thresholds.<br></li>
+<li>Aligning traces to a common first break ensures consistent
+interpretation.<br></li>
+<li>Time-zero correction is essential for reliable time-to-depth
+conversion and structural imaging.</li>
 </ul></div>
 </div>
 </div>
-<div class="introduction">
-<p>Ground Penetrating Radar (GPR) write about bkr:</p>
+<div class="section level2 introduction">
+<h2 id="time-zero-in-gpr">Time-Zero in GPR<a class="anchor" aria-label="anchor" href="#time-zero-in-gpr"></a></h2>
+<p>In Ground Penetrating Radar (GPR), <strong>time-zero</strong> is the
+reference point corresponding to the instant when the transmitted
+electromagnetic pulse leaves the antenna and enters the medium. Ideally,
+this should appear at the start of every recorded trace. In practice,
+traces often show a shift in time-zero due to:</p>
+<ul><li>electronic delays in the system trigger and recording,</li>
+<li>physical separation between transmitting and receiving
+antennas,</li>
+<li>coupling effects between antennas and the ground surface.</li>
+</ul><p>These shifts cause reflections to appear later than their true
+arrival time. If left uncorrected, such misalignment leads to errors in
+estimating depths and comparing events across traces.</p>
+<p><strong>Time-zero correction</strong> realigns all traces so that
+their effective start time corresponds to the true wave entry. This
+process improves consistency and ensures that travel times can be
+correctly converted to depth using velocity models.</p>
+<p>In this lesson we use an <strong>automatic first-break detection
+method</strong>. The Hilbert transform is applied to compute the signal
+envelope, and a threshold relative to the maximum amplitude is used to
+pick the first significant arrival in each trace. The median of these
+first breaks defines the common alignment point. Traces are then shifted
+to this reference, and the section is trimmed so the new time axis
+begins at zero.</p>
+<p>This correction is essential before velocity analysis, migration, or
+quantitative interpretation of GPR data. It is a standard preprocessing
+step in both engineering and archaeological applications.</p>
+</div>
+<section><h2 class="section-heading" id="example-1-automatic-time-zero-correction-using-first-break-detection">Example 1 — Automatic Time-Zero Correction using First-Break
+Detection<a class="anchor" aria-label="anchor" href="#example-1-automatic-time-zero-correction-using-first-break-detection"></a></h2>
+<hr class="half-width"><p>The following code implements an automatic method to detect first
+breaks in GPR traces and realign all traces so that their time-zero is
+consistent. This approach uses the Hilbert transform to compute the
+signal envelope and an amplitude threshold to identify the first
+arrival.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -507,15 +574,119 @@
 <span id="cb1-117"><a href="#cb1-117" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb1-118"><a href="#cb1-118" tabindex="-1"></a>plt.show()</span></code></pre>
 </div>
-</div>
+<p>Step-by-step explanation</p>
+<p>First-break detection</p>
+<p>The Hilbert transform computes the analytic signal; its absolute
+value gives the envelope.</p>
+<p>The code sets a threshold at 5% (threshold_ratio=0.05) of the maximum
+envelope.</p>
+<p>The first sample exceeding this threshold (after min_sample) is
+picked as the first break.</p>
+<p>Automatic alignment</p>
+<p>All traces are analyzed, producing a list of first-break indices
+(shifts).</p>
+<p>The median of these indices defines the target sample for
+alignment.</p>
+<p>Each trace is shifted so that its first break matches this
+target.</p>
+<p>Section trimming</p>
+<p>Samples above the target are removed, so the new section begins at a
+common time-zero.</p>
+<p>Quality control plots</p>
+<p>A histogram of first breaks shows their distribution and helps check
+consistency.</p>
+<p>A trace overlay (original vs corrected) illustrates the
+alignment.</p>
+<p>Vertical lines on sample traces visualize first-break picks.</p>
+<p>Side-by-side radargrams show the effect of correction at the section
+scale.</p>
+<p>Interpretation</p>
+<p>After correction, all traces share the same starting point, enabling
+accurate depth conversion.</p>
+<p>Misalignments due to system delays are removed, improving reflector
+continuity.</p>
+<p>The method is automatic but can be adjusted (e.g., threshold ratio,
+minimum sample) to fit data characteristics.</p>
+</section><section><h2 class="section-heading" id="example-2-manual-time-zero-correction-using-a-reference-trace">Example 2 — Manual Time-Zero Correction using a Reference Trace<a class="anchor" aria-label="anchor" href="#example-2-manual-time-zero-correction-using-a-reference-trace"></a></h2>
+<hr class="half-width"><p>In some cases, automatic picking may not be reliable (e.g. noisy
+data, strong early clutter).<br>
+A simpler approach is to pick a <strong>reference trace</strong>
+manually and align all other traces to its first break.</p>
+<pre><code># --- Pick a reference trace manually ---
+ref_idx = 500  # example: middle trace as reference
+ref_trace = data[:, ref_idx]
+
+# Detect first break on reference trace
+ref_fb = detect_first_break(ref_trace, threshold_ratio=0.05, min_sample=5)
+print(f"Reference trace index: {ref_idx}, First break sample: {ref_fb}")
+
+# Detect first breaks on all traces
+all_fb = [detect_first_break(data[:, i], threshold_ratio=0.05, min_sample=5) for i in range(n_traces)]
+
+# Align traces to the reference first break
+corrected_manual = np.zeros_like(data)
+for i in range(n_traces):
+    shift = all_fb[i] - ref_fb
+    trace = data[:, i]
+    shifted_trace = np.zeros_like(trace)
+    if shift &gt;= 0:
+        shifted_trace[:len(trace)-shift] = trace[shift:]
+    else:
+        shifted_trace[-shift:] = trace[:len(trace)+shift]
+    corrected_manual[:, i] = shifted_trace
+
+# Trim so time-zero begins at the reference first break
+corrected_manual = corrected_manual[ref_fb:, :]
+
+# Plot before and after
+fig, axs = plt.subplots(1, 2, figsize=(14, 6), sharey=False)
+axs[0].imshow(data, cmap="gray", aspect="auto", origin="upper")
+axs[0].set_title("Before Manual Time-Zero Correction")
+axs[0].set_xlabel("Trace")
+axs[0].set_ylabel("Sample")
+
+axs[1].imshow(corrected_manual, cmap="gray", aspect="auto", origin="upper")
+axs[1].set_title(f"After Manual Correction (Aligned to Trace {ref_idx})")
+axs[1].set_xlabel("Trace")
+
+plt.tight_layout()
+plt.show()</code></pre>
+<p>Explanation</p>
+<p>A reference trace is chosen manually (here: index 500).</p>
+<p>Its first break defines the target time-zero.</p>
+<p>All other traces are shifted relative to this reference.</p>
+<p>Useful when automatic methods pick inconsistent breaks due to noise
+or strong clutter.</p>
+<p>Less robust if the reference trace itself is distorted, so careful
+selection is required.</p>
+</section><section><h2 class="section-heading" id="example-3-visualizing-first-break-picks-across-the-section">Example 3 — Visualizing First-Break Picks Across the Section<a class="anchor" aria-label="anchor" href="#example-3-visualizing-first-break-picks-across-the-section"></a></h2>
+<hr class="half-width"><p>To check the reliability of time-zero correction, it is useful to
+overlay first-break picks on top of the raw section.</p>
+<pre><code># Detect first breaks on all traces (reuse detect_first_break function)
+first_breaks = [detect_first_break(data[:, i], threshold_ratio=0.05, min_sample=5) for i in range(n_traces)]
+
+# Plot section with first-break picks overlaid
+plt.figure(figsize=(12, 6))
+plt.imshow(data, cmap="gray", aspect="auto", origin="upper")
+plt.scatter(np.arange(n_traces), first_breaks, color='red', s=10, label='First breaks')
+plt.title("Raw Section with First-Break Picks")
+plt.xlabel("Trace Number")
+plt.ylabel("Sample Index")
+plt.legend()
+plt.show()</code></pre>
+<p>Explanation</p>
+<p>Each red point marks the picked first break for one trace.</p>
+<p>A consistent horizontal band of picks indicates reliable automatic
+detection.</p>
+<p>Large scatter suggests noise or variable coupling; parameters
+(threshold, minimum sample) may need adjusting.</p>
+<p>This visualization helps students evaluate whether the correction
+will be successful before applying shifts.</p>
 <!--
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-
-
-
-      </div> <!-- / div.lesson-content -->
+</section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="../instructor/Background%20Removal.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="../instructor/Bandpass%20Filtering.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
@@ -573,7 +744,7 @@ any links that you are not going to use.
   "url": "https://Azinkarimzad.github.io/Imaging_the_unseen/instructor/Time-Zero Correction.html",
   "identifier": "https://Azinkarimzad.github.io/Imaging_the_unseen/instructor/Time-Zero Correction.html",
   "dateCreated": "2025-09-07",
-  "dateModified": "2025-04-16",
+  "dateModified": "2025-09-07",
   "datePublished": "2025-09-07"
 }
 
