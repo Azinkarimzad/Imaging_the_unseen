@@ -260,12 +260,21 @@
 <div class="accordion accordion-flush" id="accordionFlushcurrent">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-headingcurrent">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
         7. Deconvolution
         </span>
-      
+      </button>
     </div><!--/div.accordion-header-->
+
+    <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
+      <div class="accordion-body">
+        <ul><li><a href="#example-1-spectral-deconvolution-on-a-2d-gpr-section">Example 1 — Spectral Deconvolution on a 2D GPR Section</a></li>
+<li><a href="#example-2-spiking-deconvolution-on-a-single-trace">Example 2 — Spiking Deconvolution on a Single Trace</a></li>
+<li><a href="#example-3-effect-of-stabilization-on-spectral-deconvolution">Example 3 — Effect of Stabilization on Spectral Deconvolution</a></li>
+        </ul></div><!--/div.accordion-body-->
+    </div><!--/div.accordion-collapse-->
 
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
@@ -337,7 +346,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Deconvolution</h1>
-        <p>Last updated on 2025-04-16 |
+        <p>Last updated on 2025-09-07 |
 
         <a href="https://github.com/Azinkarimzad/Imaging_the_unseen/edit/main/episodes/Deconvolution.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -356,7 +365,14 @@
 <div class="card-body">
 <div class="inner">
 <h3 class="card-title">Questions</h3>
-<ul><li>What isAGC</li>
+<ul><li>What is deconvolution in the context of GPR processing?<br></li>
+<li>Why do recorded GPR signals differ from the true earth
+response?<br></li>
+<li>How does spectral deconvolution recover sharper reflections?<br></li>
+<li>What is the role of the stabilization parameter in
+deconvolution?<br></li>
+<li>How can we evaluate the effect of deconvolution on traces and
+sections?<br></li>
 </ul></div>
 </div>
 </div>
@@ -364,7 +380,14 @@
 <div class="card-body">
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
-<ul><li>Describe AGC</li>
+<ul><li>Define deconvolution and explain its purpose in GPR signal
+processing.<br></li>
+<li>Implement frequency-domain (spectral) deconvolution on individual
+traces and full sections.<br></li>
+<li>Assess the impact of stabilization on the recovered signal.<br></li>
+<li>Compare radargrams before and after deconvolution to evaluate
+reflector clarity.<br></li>
+<li>Use single-trace examples to illustrate wavelet shortening.<br></li>
 </ul></div>
 </div>
 </div>
@@ -377,101 +400,203 @@
 <span class="callout-header">Key Points</span>
 <div class="callout-inner">
 <div class="callout-content">
-<ul><li>GPR AGC</li>
+<ul><li>GPR records are a convolution of the source wavelet and subsurface
+reflectivity.<br></li>
+<li>Deconvolution aims to remove the source wavelet, recovering a
+spike-like reflectivity.<br></li>
+<li>Spectral deconvolution divides the spectrum by its amplitude, with
+stabilization to avoid noise blow-up.<br></li>
+<li>Spiking deconvolution sharpens arrivals but requires careful
+parameter tuning.<br></li>
+<li>Stabilization controls the trade-off between resolution gain and
+noise amplification.<br></li>
 </ul></div>
 </div>
 </div>
 <div class="introduction">
-<p>Ground Penetrating Radar (GPR) write about AGC:</p>
+<p>Ground Penetrating Radar (GPR) does not record the true reflectivity
+of the subsurface. Instead, each trace represents the
+<strong>convolution</strong> of the antenna source wavelet with
+reflections from interfaces in the ground. This convolution blurs the
+reflectivity, producing wavelets rather than sharp spikes.</p>
+<p><strong>Deconvolution</strong> is a signal processing step that
+attempts to undo this effect by compressing the wavelet into something
+closer to a spike. The goal is improved temporal resolution, so that
+thin layers and closely spaced reflectors can be better
+distinguished.</p>
+<p>A common approach is <strong>spectral deconvolution</strong>. In the
+frequency domain, the observed trace spectrum is divided by its
+amplitude spectrum (with a small stabilization factor added to prevent
+division by near-zero values). The phase is preserved. After inverse
+Fourier transform, the resulting trace shows sharpened reflections.</p>
+<p>The stabilization constant is critical: too small and noise
+dominates; too large and resolution gains are lost. In practice,
+deconvolution is applied trace-by-trace across the section and results
+are compared to the original radargram to confirm improved clarity
+without excessive noise.</p>
+</div>
+<section><h2 class="section-heading" id="example-1-spectral-deconvolution-on-a-2d-gpr-section">Example 1 — Spectral Deconvolution on a 2D GPR Section<a class="anchor" aria-label="anchor" href="#example-1-spectral-deconvolution-on-a-2d-gpr-section"></a></h2>
+<hr class="half-width"><p>The following code implements spectral deconvolution for each trace
+of a SEG-Y GPR section and compares the radargram before and after
+processing.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">from</span> obspy.io.segy.segy <span class="im">import</span> _read_segy</span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="im">from</span> scipy.fft <span class="im">import</span> rfft, irfft, rfftfreq</span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="kw">def</span> spectral_decon(trace, fs, stab<span class="op">=</span><span class="fl">0.01</span>):</span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">    Apply frequency-domain (spectral) deconvolution to a trace.</span></span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co">    Parameters:</span></span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co">        trace (1D array): input trace</span></span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co">        fs (float): sampling frequency in Hz</span></span>
-<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co">        stab (float): stabilization constant</span></span>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">from</span> obspy.io.segy.segy <span class="im">import</span> _read_segy</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">from</span> scipy.fft <span class="im">import</span> rfft, irfft, rfftfreq</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="kw">def</span> spectral_decon(trace, fs, stab<span class="op">=</span><span class="fl">0.01</span>):</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">    Apply frequency-domain (spectral) deconvolution to a trace.</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(trace)</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    f <span class="op">=</span> rfftfreq(n, d<span class="op">=</span><span class="dv">1</span><span class="op">/</span>fs)</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>    spectrum <span class="op">=</span> rfft(trace)</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>    amp <span class="op">=</span> np.<span class="bu">abs</span>(spectrum)</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>    phase <span class="op">=</span> spectrum <span class="op">/</span> (amp <span class="op">+</span> <span class="fl">1e-12</span>)  <span class="co"># preserve phase</span></span>
 <span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="co">        deconvolved trace (1D array)</span></span>
-<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(trace)</span>
-<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>    f <span class="op">=</span> rfftfreq(n, d<span class="op">=</span><span class="dv">1</span><span class="op">/</span>fs)</span>
-<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>    spectrum <span class="op">=</span> rfft(trace)</span>
-<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>    amp <span class="op">=</span> np.<span class="bu">abs</span>(spectrum)</span>
-<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>    phase <span class="op">=</span> spectrum <span class="op">/</span> (amp <span class="op">+</span> <span class="fl">1e-12</span>)  <span class="co"># preserve phase</span></span>
-<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>    <span class="co"># Invert the amplitude spectrum with stabilization</span></span>
-<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>    inverse_amp <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (amp <span class="op">+</span> stab <span class="op">*</span> np.<span class="bu">max</span>(amp))</span>
-<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>    decon_spectrum <span class="op">=</span> inverse_amp <span class="op">*</span> spectrum</span>
-<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>    <span class="co"># Reconstruct the time-domain signal</span></span>
-<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>    decon_trace <span class="op">=</span> irfft(decon_spectrum, n<span class="op">=</span>n)</span>
-<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a>    <span class="cf">return</span> decon_trace</span>
-<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a><span class="co"># --- Load SEG-Y GPR data ---</span></span>
-<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a>segy_file <span class="op">=</span> <span class="st">"LINE01.sgy"</span></span>
-<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a>stream <span class="op">=</span> _read_segy(segy_file, headonly<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a><span class="co"># Build 2D data array [samples x traces]</span></span>
-<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a>n_traces <span class="op">=</span> <span class="bu">len</span>(stream.traces)</span>
-<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="bu">max</span>(<span class="bu">len</span>(tr.data) <span class="cf">for</span> tr <span class="kw">in</span> stream.traces)</span>
-<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a>data <span class="op">=</span> np.zeros((n_samples, n_traces))</span>
-<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a><span class="cf">for</span> i, tr <span class="kw">in</span> <span class="bu">enumerate</span>(stream.traces):</span>
-<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a>    data[:<span class="bu">len</span>(tr.data), i] <span class="op">=</span> tr.data</span>
-<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a><span class="co"># --- Sampling frequency from header ---</span></span>
-<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a>    dt_us <span class="op">=</span> stream.binary_file_header.sample_interval_in_microseconds</span>
-<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a>    <span class="cf">if</span> dt_us <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> dt_us <span class="op">&gt;</span> <span class="dv">10</span>:</span>
-<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Header sample interval </span><span class="sc">{</span>dt_us<span class="sc">}</span><span class="ss"> µs seems invalid. Overriding to 0.5 µs."</span>)</span>
-<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a>        dt_us <span class="op">=</span> <span class="fl">0.5</span></span>
-<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a><span class="cf">except</span>:</span>
-<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Sample interval not found. Using default of 0.5 µs."</span>)</span>
-<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a>    dt_us <span class="op">=</span> <span class="fl">0.5</span></span>
-<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a></span>
-<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a>fs <span class="op">=</span> <span class="fl">1e6</span> <span class="op">/</span> dt_us  <span class="co"># sampling frequency in Hz</span></span>
-<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Sampling rate: </span><span class="sc">{</span>fs<span class="op">/</span><span class="fl">1e6</span><span class="sc">:.2f}</span><span class="ss"> MHz"</span>)</span>
-<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a></span>
-<span id="cb1-57"><a href="#cb1-57" tabindex="-1"></a><span class="co"># --- Apply spectral deconvolution ---</span></span>
-<span id="cb1-58"><a href="#cb1-58" tabindex="-1"></a>decon_data <span class="op">=</span> np.zeros_like(data)</span>
-<span id="cb1-59"><a href="#cb1-59" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_traces):</span>
-<span id="cb1-60"><a href="#cb1-60" tabindex="-1"></a>    decon_data[:, i] <span class="op">=</span> spectral_decon(data[:, i], fs<span class="op">=</span>fs, stab<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb1-61"><a href="#cb1-61" tabindex="-1"></a></span>
-<span id="cb1-62"><a href="#cb1-62" tabindex="-1"></a><span class="co"># --- Plot comparison ---</span></span>
-<span id="cb1-63"><a href="#cb1-63" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-64"><a href="#cb1-64" tabindex="-1"></a></span>
-<span id="cb1-65"><a href="#cb1-65" tabindex="-1"></a>axs[<span class="dv">0</span>].imshow(data, cmap<span class="op">=</span><span class="st">"gray"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>, origin<span class="op">=</span><span class="st">"upper"</span>)</span>
-<span id="cb1-66"><a href="#cb1-66" tabindex="-1"></a>axs[<span class="dv">0</span>].set_title(<span class="st">"Original GPR Data"</span>)</span>
-<span id="cb1-67"><a href="#cb1-67" tabindex="-1"></a>axs[<span class="dv">0</span>].set_xlabel(<span class="st">"Trace"</span>)</span>
-<span id="cb1-68"><a href="#cb1-68" tabindex="-1"></a>axs[<span class="dv">0</span>].set_ylabel(<span class="st">"Sample"</span>)</span>
-<span id="cb1-69"><a href="#cb1-69" tabindex="-1"></a></span>
-<span id="cb1-70"><a href="#cb1-70" tabindex="-1"></a>axs[<span class="dv">1</span>].imshow(decon_data, cmap<span class="op">=</span><span class="st">"gray"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>, origin<span class="op">=</span><span class="st">"upper"</span>)</span>
-<span id="cb1-71"><a href="#cb1-71" tabindex="-1"></a>axs[<span class="dv">1</span>].set_title(<span class="st">"Spectral Deconvolved GPR Data"</span>)</span>
-<span id="cb1-72"><a href="#cb1-72" tabindex="-1"></a>axs[<span class="dv">1</span>].set_xlabel(<span class="st">"Trace"</span>)</span>
-<span id="cb1-73"><a href="#cb1-73" tabindex="-1"></a></span>
-<span id="cb1-74"><a href="#cb1-74" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb1-75"><a href="#cb1-75" tabindex="-1"></a>plt.show()</span>
-<span id="cb1-76"><a href="#cb1-76" tabindex="-1"></a></span></code></pre>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>    <span class="co"># Invert amplitude spectrum with stabilization</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>    inverse_amp <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (amp <span class="op">+</span> stab <span class="op">*</span> np.<span class="bu">max</span>(amp))</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>    decon_spectrum <span class="op">=</span> inverse_amp <span class="op">*</span> spectrum</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>    <span class="co"># Back to time domain</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>    decon_trace <span class="op">=</span> irfft(decon_spectrum, n<span class="op">=</span>n)</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>    <span class="cf">return</span> decon_trace</span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a><span class="co"># --- Load SEG-Y GPR data ---</span></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>segy_file <span class="op">=</span> <span class="st">"LINE01.sgy"</span></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>stream <span class="op">=</span> _read_segy(segy_file, headonly<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a><span class="co"># Build 2D data array [samples x traces]</span></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>n_traces <span class="op">=</span> <span class="bu">len</span>(stream.traces)</span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="bu">max</span>(<span class="bu">len</span>(tr.data) <span class="cf">for</span> tr <span class="kw">in</span> stream.traces)</span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a>data <span class="op">=</span> np.zeros((n_samples, n_traces))</span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a><span class="cf">for</span> i, tr <span class="kw">in</span> <span class="bu">enumerate</span>(stream.traces):</span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a>    data[:<span class="bu">len</span>(tr.data), i] <span class="op">=</span> tr.data</span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a><span class="co"># --- Sampling frequency ---</span></span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a>    dt_us <span class="op">=</span> stream.binary_file_header.sample_interval_in_microseconds</span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a>    <span class="cf">if</span> dt_us <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> dt_us <span class="op">&gt;</span> <span class="dv">10</span>:</span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Header sample interval </span><span class="sc">{</span>dt_us<span class="sc">}</span><span class="ss"> µs seems invalid. Overriding to 0.5 µs."</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a>        dt_us <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a><span class="cf">except</span>:</span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Sample interval not found. Using default of 0.5 µs."</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a>    dt_us <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a>fs <span class="op">=</span> <span class="fl">1e6</span> <span class="op">/</span> dt_us</span>
+<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Sampling rate: </span><span class="sc">{</span>fs<span class="op">/</span><span class="fl">1e6</span><span class="sc">:.2f}</span><span class="ss"> MHz"</span>)</span>
+<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a><span class="co"># --- Apply spectral deconvolution ---</span></span>
+<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a>decon_data <span class="op">=</span> np.zeros_like(data)</span>
+<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_traces):</span>
+<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a>    decon_data[:, i] <span class="op">=</span> spectral_decon(data[:, i], fs<span class="op">=</span>fs, stab<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a><span class="co"># --- Plot comparison ---</span></span>
+<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a>axs[<span class="dv">0</span>].imshow(data, cmap<span class="op">=</span><span class="st">"gray"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>, origin<span class="op">=</span><span class="st">"upper"</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a>axs[<span class="dv">0</span>].set_title(<span class="st">"Original GPR Data"</span>)</span>
+<span id="cb1-57"><a href="#cb1-57" tabindex="-1"></a>axs[<span class="dv">0</span>].set_xlabel(<span class="st">"Trace"</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" tabindex="-1"></a>axs[<span class="dv">0</span>].set_ylabel(<span class="st">"Sample"</span>)</span>
+<span id="cb1-59"><a href="#cb1-59" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" tabindex="-1"></a>axs[<span class="dv">1</span>].imshow(decon_data, cmap<span class="op">=</span><span class="st">"gray"</span>, aspect<span class="op">=</span><span class="st">"auto"</span>, origin<span class="op">=</span><span class="st">"upper"</span>)</span>
+<span id="cb1-61"><a href="#cb1-61" tabindex="-1"></a>axs[<span class="dv">1</span>].set_title(<span class="st">"Spectral Deconvolved GPR Data"</span>)</span>
+<span id="cb1-62"><a href="#cb1-62" tabindex="-1"></a>axs[<span class="dv">1</span>].set_xlabel(<span class="st">"Trace"</span>)</span>
+<span id="cb1-63"><a href="#cb1-63" tabindex="-1"></a></span>
+<span id="cb1-64"><a href="#cb1-64" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-65"><a href="#cb1-65" tabindex="-1"></a>plt.show()</span></code></pre>
 </div>
-</div>
+<p>Explanation:</p>
+<p>Fourier transform each trace → separate amplitude and phase.</p>
+<p>Invert amplitude spectrum, with stabilization constant to prevent
+division by zero.</p>
+<p>Recombine with phase and inverse transform → sharpened trace.</p>
+<p>Apply across all traces to produce deconvolved section.</p>
+<p>Compare radargrams before and after → reflections appear narrower and
+better resolved.</p>
+</section><section><h2 class="section-heading" id="example-2-spiking-deconvolution-on-a-single-trace">Example 2 — Spiking Deconvolution on a Single Trace<a class="anchor" aria-label="anchor" href="#example-2-spiking-deconvolution-on-a-single-trace"></a></h2>
+<hr class="half-width"><p>Spiking deconvolution uses the autocorrelation of a trace to estimate
+its wavelet and design a filter that compresses it into a spike.</p>
+<pre><code>from scipy.linalg import toeplitz, solve_toeplitz
+
+def spiking_decon(trace, stab=0.1, filter_length=30):
+    """
+    Spiking deconvolution using Wiener filter design.
+    """
+    # Autocorrelation
+    autocorr = np.correlate(trace, trace, mode="full")
+    autocorr = autocorr[autocorr.size // 2:]
+
+    # Toeplitz system
+    R = toeplitz(autocorr[:filter_length])
+    r = np.zeros(filter_length)
+    r[0] = 1.0  # desired spike
+
+    # Stabilization
+    R += stab * np.eye(filter_length)
+
+    # Solve Wiener-Hopf equations
+    f = np.linalg.solve(R, autocorr[:filter_length])
+    decon = np.convolve(trace, f, mode="same")
+    return decon
+
+# Apply to one representative trace
+trace_idx = n_traces // 2
+original_trace = data[:, trace_idx]
+decon_trace = spiking_decon(original_trace, stab=0.1, filter_length=30)
+
+plt.figure(figsize=(10, 4))
+plt.plot(original_trace, label="Original", alpha=0.7)
+plt.plot(decon_trace, label="Spiking Deconvolved", linestyle="--")
+plt.title(f"Trace {trace_idx} before and after Spiking Deconvolution")
+plt.xlabel("Sample")
+plt.ylabel("Amplitude")
+plt.legend()
+plt.grid(True)
+plt.show()
+</code></pre>
+<p>Explanation</p>
+<p>Estimate wavelet from autocorrelation of the trace.</p>
+<p>Solve Wiener equations to design filter that compresses wavelet into
+a spike.</p>
+<p>Convolve filter with trace → spike-like reflectivity series.</p>
+<p>Useful for single traces or small windows where spectral method is
+unstable.</p>
+</section><section><h2 class="section-heading" id="example-3-effect-of-stabilization-on-spectral-deconvolution">Example 3 — Effect of Stabilization on Spectral Deconvolution<a class="anchor" aria-label="anchor" href="#example-3-effect-of-stabilization-on-spectral-deconvolution"></a></h2>
+<hr class="half-width"><p>The stabilization constant (stab) controls the balance between
+resolution gain and noise. This example applies different values and
+compares results.</p>
+<pre><code>stab_values = [0.01, 0.1, 1.0]
+
+fig, axs = plt.subplots(1, 3, figsize=(18, 6), sharey=True)
+
+for i, stab in enumerate(stab_values):
+    decon_data_test = np.zeros_like(data)
+    for j in range(n_traces):
+        decon_data_test[:, j] = spectral_decon(data[:, j], fs=fs, stab=stab)
+    axs[i].imshow(decon_data_test, cmap="gray", aspect="auto", origin="upper")
+    axs[i].set_title(f"Spectral Deconvolution\nstab={stab}")
+    axs[i].set_xlabel("Trace")
+    if i == 0:
+        axs[i].set_ylabel("Sample")
+
+plt.tight_layout()
+plt.show()
+</code></pre>
+<p>Explanation</p>
+<p>Small stab (0.01): strong wavelet compression but high noise
+amplification.</p>
+<p>Moderate stab (0.1): balanced improvement; often practical.</p>
+<p>Large stab (1.0): stable but reflections less sharpened.</p>
+<p>Students can see the trade-off and understand why stabilization is
+critical.</p>
 <!--
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-
-
-
-      </div> <!-- / div.lesson-content -->
+</section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="Bandpass%20Filtering.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="Wrap-up%20and%20Discussion.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
@@ -529,7 +654,7 @@ any links that you are not going to use.
   "url": "https://Azinkarimzad.github.io/Imaging_the_unseen/Deconvolution.html",
   "identifier": "https://Azinkarimzad.github.io/Imaging_the_unseen/Deconvolution.html",
   "dateCreated": "2025-09-07",
-  "dateModified": "2025-04-16",
+  "dateModified": "2025-09-07",
   "datePublished": "2025-09-07"
 }
 
