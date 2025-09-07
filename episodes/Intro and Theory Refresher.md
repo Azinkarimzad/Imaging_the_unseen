@@ -14,6 +14,14 @@ exercises: 5
 
 - How can we process and visualize SEG-Y GPR data using Python?
 
+- What are the core hardware and data-logging components of a GPR system, and how do they interact during acquisition?
+
+- Through which physical contrasts does GPR detect subsurface changes, and how do antenna frequency and bandwidth control resolution and depth?
+
+- What does a single GPR trace represent in time and in depth, and how is a radargram constructed from adjacent traces?
+
+- How can we read, inspect metadata, and visualize SEG-Y GPR data in Python using ObsPy without modifying the raw samples?
+
 ::::::
 
 :::::: objectives
@@ -25,6 +33,14 @@ exercises: 5
 - Interpret what a single GPR trace and a 2D radargram represent.
 
 - Demonstrate loading and visualizing GPR SEG-Y data using Python and obspy.
+
+- Identify the console, antenna, and encoder roles in a modern GPR system and relate them to sampling, time window, and spatial sampling.
+
+- Explain reflection generation from dielectric permittivity contrasts and the implications for amplitude, polarity, and travel time.
+
+- Interpret a trace as a one-dimensional time series and a radargram as a two-dimensional section built by lateral stacking of traces.
+
+- Demonstrate loading SEG-Y, inspecting basic headers, and plotting trace-level and section-level views using ObsPy and matplotlib.
 ::::::
 
 :::::: keypoints
@@ -32,6 +48,10 @@ exercises: 5
 - GPR uses EM waves to detect subsurface features.
 - A trace is a time series of reflections from a point.
 - SEG-Y files can be visualized using ObsPy.
+- GPR emits broadband electromagnetic pulses; reflections arise at contrasts in relative permittivity, conductivity, or magnetic permeability.
+- A GPR trace is amplitude versus two-way travel time at a single surface position; a radargram is a collection of traces along a profile.
+- SEG-Y is a common container for GPR; ObsPy can read variable-length traces and expose headers needed for plotting and basic QC.
+- Antenna frequency controls depth–resolution trade-off: lower frequency penetrates deeper with coarser resolution; higher frequency resolves finer targets at shallower depths.
 
 ::::::
 
@@ -92,11 +112,13 @@ GPR was pushed.
 
 
 
-In this episode, we'll introduce how to read and visualize a GPR trace from SEG-Y data using Python and the `obspy` library.
+In this episode we will read and visualize a GPR trace from SEG-Y data using Python and the ObsPy library. The aim is rapid inspection for quality control and for building intuition on trace and section appearance prior to any processing.
 
-To visualize Ground Penetrating Radar (GPR) data, we can use the `obspy` library, which supports the SEG-Y format.
+Example data context
 
-Below is a simple example of how to load and display a single GPR trace:
+Assume LINE01.sgy is a single profile recorded with an air-coupled or ground-coupled system. The file may contain variable-length traces. The sampling interval, number of samples, and textual or binary headers carry acquisition metadata.
+
+## Example 1 — Plot a single trace for a quick look
 
 ```python
 from obspy.io.segy.segy import _read_segy
@@ -119,7 +141,27 @@ plt.grid(True)
 plt.show()
 ```
 
+What this code does, step by step:
 
+Import readers and plotting: brings in ObsPy’s private SEG-Y reader and matplotlib.
+
+Read the SEG-Y stream: _read_segy parses the file into a SEGYFile-like object with a .traces list. headonly=False ensures sample arrays are read, not just headers.
+
+Select the first trace: stream.traces[0].data returns a one-dimensional array of amplitudes for the first position along the line.
+
+Count traces: len(stream.traces) gives the number of positions acquired.
+
+Plot the raw samples: the x-axis is sample index, not time, because a sample interval has not been applied; the y-axis is recorded amplitude in instrument units.
+
+Interpretation note: a clear early-time direct wave or ring-down may dominate the first part of the trace; deeper reflections appear later in the sample index.
+
+Add-on checks on performance:
+
+Confirm whether amplitudes are signed and whether clipping is visible.
+
+convert sample index to time using the trace header sample interval.
+
+Look for saturation or DC drift that might require dewow in further processing.
 
 ```python
 import matplotlib.pyplot as plt
