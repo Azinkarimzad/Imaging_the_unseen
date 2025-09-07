@@ -249,7 +249,7 @@ print("Sample interval (microseconds):", tr0.header.sample_interval_in_ms_for_th
 print("Trace sequence number:", tr0.header.trace_sequence_number_within_line)
 
 ```
-Explanation:
+What this code does, step by step:
 
 headonly=True avoids loading amplitudes and reads only headers.
 
@@ -284,7 +284,7 @@ plt.ylabel("Amplitude")
 plt.grid(True)
 plt.show()
 ```
-Explanation:
+What this code does, step by step:
 
 The x-axis now shows two-way travel time in seconds.
 
@@ -323,7 +323,7 @@ plt.legend()
 plt.grid(True)
 plt.show()
 ```
-Explanation:
+What this code does, step by step:
 
 The exponential gain increases amplitudes at later times.
 
