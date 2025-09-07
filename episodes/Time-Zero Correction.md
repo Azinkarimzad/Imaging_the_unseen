@@ -312,7 +312,4 @@ A consistent horizontal band of picks indicates reliable automatic detection.
 Large scatter suggests noise or variable coupling; parameters (threshold, minimum sample) may need adjusting.
 
 This visualization helps students evaluate whether the correction will be successful before applying shifts.
-
-
-
 ::::::
