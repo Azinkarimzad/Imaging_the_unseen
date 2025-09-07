@@ -231,7 +231,7 @@ The method is automatic but can be adjusted (e.g., threshold ratio, minimum samp
 In some cases, automatic picking may not be reliable (e.g. noisy data, strong early clutter).  
 A simpler approach is to pick a **reference trace** manually and align all other traces to its first break.
 
-```python
+```
 # --- Pick a reference trace manually ---
 ref_idx = 500  # example: middle trace as reference
 ref_trace = data[:, ref_idx]
@@ -289,7 +289,7 @@ Less robust if the reference trace itself is distorted, so careful selection is 
 
 To check the reliability of time-zero correction, it is useful to overlay first-break picks on top of the raw section.
 
-```python
+```
 # Detect first breaks on all traces (reuse detect_first_break function)
 first_breaks = [detect_first_break(data[:, i], threshold_ratio=0.05, min_sample=5) for i in range(n_traces)]
 
