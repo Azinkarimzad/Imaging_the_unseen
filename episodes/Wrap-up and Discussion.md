@@ -24,3 +24,4 @@ exercises: 2
 - Parameters (e.g., filter cutoffs, stabilization constants) control the trade-off between resolution and noise.  
 - No single workflow is universal; effective GPR interpretation requires testing, visual inspection, and critical judgment.  
 - Python offers a transparent environment for experimenting with and combining different methods.  
+::::::
